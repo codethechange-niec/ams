@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body>
+    <% let col1 = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"] %>
+    <table style="width:100%" class="table">
+       <tr>
+         <th>Days</th>
+         <th>Lecture1</th>
+         <th>Lecture2</th>
+         <th>Lecture3</th>
+         <th>Lecture4</th>
+         <th>Lecture5</th>
+         <th>Lecture6</th>
+         <th>Lecture7</th>
+       </tr>
+       <% for(let i=0; i<timeTable.length; i++) { %>
+         <tr>
+           <td><%= col1[i] %></td>
+           <% for(let j=1; j<8; j++) { %>
+           <td><a href="/attendance/<%= `lec${j}` %>/<%= timeTable[i][`lec${j}`] %>"><%= timeTable[i][`lec${j}`] %></a></td>
+           <% } %>
+         </tr>
+       <% } %>
+    </table>
+
+    <script src="js/home.js" charset="utf-8"></script>
+  </body>
+</html>

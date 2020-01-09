@@ -1,0 +1,44 @@
+body{
+    background-color: #F67280;
+    
+}
+#attendance-table{
+    display: block;
+    
+    
+}
+.container{
+    text-align: center;
+    border-radius: 10px;
+    margin: 20px auto;
+    background-color: antiquewhite;
+    width: 90%;
+}
+.heading{
+    padding: 20px;
+    letter-spacing: 10px;
+    font-weight: 600;
+    font-size: 2.4em;
+}
+.table{
+    margin: auto ;
+    padding:45px;
+    background-color: #C06C84;
+    width: 100%;
+    border-radius: 0px 0px 10px 10px;
+    color:rgb(100,0,60);
+}
+.table-heading th{
+    padding: 0px 30px 10px 50px;
+    font-size: 1.3em;
+    border: 1px dotted ;
+}
+.data td{
+    padding: 2px;
+   
+}
+#checkbox{
+   width: 1.4em;
+    height: 1.4em;
+    
+}

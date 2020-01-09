@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>create section</title>
+  </head>
+  <body>
+    <!-- <input type="text" name="" value=""> -->
+    <form class="" action="/admin/create_section" method="post">
+      <div id="div1">
+        <h3>container number: 1</h3>
+        <input type="text" name="" value="">
+        <button type="button" name="add" onclick="addInput()">Add</button>
+        <button type="button" name="delete" id="1" onclick="deleteInput(event)">Delete</button>
+      </div>
+    </form>
+
+    <script>
+
+      var i=1;
+
+
+      function addInput() {
+
+        var newDiv = document.createElement("div")
+        newDiv.id = `div${++i}`
+
+        var newh3 = document.createElement("h3")
+        newh3.innerHTML = `container number: ${i}`
+
+        var newElement = document.createElement("input")
+        newElement.type = "text";
+
+        var newAddButton = document.createElement("button")
+        newAddButton.addEventListener("click", addInput);
+        newAddButton.innerHTML = "Add"
+        newAddButton.type = "button"
+        newAddButton.name = 'add'
+
+        var newDeleteButton = document.createElement("button")
+        newDeleteButton.id = `${i}`
+        newDeleteButton.addEventListener("click", deleteInput)
+        newDeleteButton.innerHTML = "Delete"
+        newDeleteButton.type = "button"
+        newDeleteButton.name = 'delete'
+
+        newDiv.appendChild(newh3)
+        newDiv.appendChild(newElement);
+        newDiv.appendChild(newAddButton);
+        newDiv.appendChild(newDeleteButton);
+
+        document.querySelector('form').appendChild(newDiv)
+
+      }
+
+      function deleteInput(e) {
+
+        console.log(e.target.id);
+
+        var childToRemove = document.querySelector(`#div${e.target.id}`)
+
+        console.log(e.target.id, childToRemove);
+
+        document.querySelector('form').removeChild(childToRemove)
+
+        i--;
+
+        checkLast();
+
+      }
+
+      function checkLast() {
+
+        var divs = document.querySelectorAll('form div');
+
+        var isLast = divs.length
+
+        if(isLast === 1) {
+          divs[0].removeChild(document.getElementsByName('delete')[0])
+        }
+
+      }
+
+
+      function myFunction() {
+      var input = document.querySelector("input");
+
+      let val = Number(input.value);
+      if(val = undefined) val=0;
+      let form = document.querySelector(".form")
+      for(let i=0; i<val; i++) {
+        form.appendChild(document.createElement("input"))
+        console.log(i+1)
+       }
+      form.appendChild(document.createElement("input"))
+    }
+
+    </script>
+  </body>
+</html>

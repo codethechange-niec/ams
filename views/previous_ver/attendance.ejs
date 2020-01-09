@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ATTENDANCE</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div id="attendance-table">
+        <div class="container">
+                <h2 class="heading">ATTENDANCE</h2>
+                <form action="/teacher/attendance" method="post">
+                <table class="table">
+
+                        <tr class="table-heading">
+                           <th class="heading-roll">Roll No</th>
+                            <th class="heading-roll">Name</th>
+                            <th class="heading-attendance">ATTENDANCE</th>
+                        </tr>
+                        <% for(let i=0; i<Students.length; i++) { %>
+                          <tr class="data">
+                              <td class="data-sr"><%= Students[i].studentRollNo %></td>
+                              <td class="data-roll"><%= Students[i].studentName %></td>
+                              <td class="data-status">
+                              <input type="checkbox" id="checkbox" name="<%= Students[i].studentRollNo %>">
+                          </tr>
+                        <%}%>
+
+                </table>
+                <button type="submit" name="button">submit</button>
+              </form>
+        </div>
+    </div>
+</body>
+</html>

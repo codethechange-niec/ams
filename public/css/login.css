@@ -1,0 +1,22 @@
+* {
+  text-decoration: none;
+}
+.row{
+    text-align: center;
+}
+.name{
+    color: #c00000;
+    font-size: 18pt;
+    font-family: Diavlo;
+    font-weight: bold;
+}
+.card{
+    width: 25rem;
+    padding: 2%;
+    margin: auto;
+    margin-top: 5%;
+}
+h2{
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    color: burlywood;
+}

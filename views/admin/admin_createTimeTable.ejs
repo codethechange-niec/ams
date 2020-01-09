@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body>
+    <table style="width:100%" class="table">
+       <tr>
+         <th>Lecture1</th>
+         <th>Lecture2</th>
+         <th>Lecture3</th>
+         <th>Lecture4</th>
+         <th>Lecture5</th>
+         <th>Lecture6</th>
+         <th>Lecture7</th>
+       </tr>
+       <% for(let i=0; i<timeTable.length; i++) { %>
+         <% for(let j=1; j<8; j++) { %>
+         <tr>
+           <td><input type="text" name="timeTable<%= [i]. %>lec1" value=""></td>
+           <td><a href="/attendance/<%= timeTable[i].lec2 %>"><%= timeTable[i].lec2 %></a></td>
+           <td><a href="/attendance/<%= timeTable[i].lec3 %>"><%= timeTable[i].lec3 %></a></td>
+           <td><a href="/attendance/<%= timeTable[i].lec4 %>"><%= timeTable[i].lec4 %></a></td>
+           <td><a href="/attendance/<%= timeTable[i].lec5 %>"><%= timeTable[i].lec5 %></a></td>
+           <td><a href="/attendance/<%= timeTable[i].lec6 %>"><%= timeTable[i].lec6 %></a></td>
+           <td><a href="/attendance/<%= timeTable[i].lec7 %>"><%= timeTable[i].lec7 %></a></td>
+         </tr>
+       <% } %>
+    </table>
+
+    <script src="js/home.js" charset="utf-8"></script>
+  </body>
+</html>

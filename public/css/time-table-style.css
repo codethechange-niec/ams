@@ -1,0 +1,56 @@
+*{
+    text-align: center;
+    
+    background-color: antiquewhite;
+    
+}
+.heading{
+    font-size: 3em;
+    text-transform: uppercase;
+    opacity: 0.8;
+    letter-spacing: 5px;
+}
+.container{
+    background-color: #F67280;
+    padding-bottom: 30px;
+    width: 100vh;
+    margin: auto;
+}
+.table{
+    margin: auto;
+    background-color: #F67280;
+}
+table .head{
+    margin: 0px;
+    padding: 5px 20px 0px 20px;
+    opacity: 0.9;
+    letter-spacing: 3px;
+    
+}
+.head h2{
+    font-weight: 500;
+}
+table .subjects{
+    margin: 0px;
+    padding: 0px
+}
+table{
+    padding: 0px 15px;
+    height: 100%;
+    width: 100%;
+    background-color:antiquewhite;;
+    border: none;
+    margin: 0px;
+}
+.subjects{
+    width: 55px;
+    
+}
+.subjects a{
+    text-decoration: none;
+    color: black;
+    letter-spacing: 2px;
+    background-color: rgba(0,0,0,0.02);
+    opacity: 0.9;
+    font-weight: 500;
+}

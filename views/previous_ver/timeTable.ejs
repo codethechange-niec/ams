@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <title></title>
+
+  </head>
+  <body>
+    <% let col1 = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"] %>
+    <div class="container">
+      <table class="table">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">Days</th>
+            <th scope="col">Lecture1</th>
+            <th scope="col">Lecture2</th>
+            <th scope="col">Lecture3</th>
+            <th scope="col">Lecture4</th>
+            <th scope="col">Lecture5</th>
+            <th scope="col">Lecture6</th>
+            <th scope="col">Lecture7</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% for(let i=0; i<timeTable.length; i++) { %>
+            <tr>
+              <th scope="row"><%= col1[i] %></th>
+              <% for(let j=1; j<8; j++) { %>
+              <td><a href="attendance/<%= `lec${j}` %>/<%= timeTable[i][`lec${j}`] %>"><%= timeTable[i][`lec${j}`] %></a></td>
+              <% } %>
+            </tr>
+          <% } %>
+        </tbody>
+      </table>
+    </div>
+    <script src="/js/home.js" charset="utf-8"></script>
+    <br><br>
+
+    <div class="container">
+      <table class="table">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">Section</th>
+            <th scope="col">Lectures</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% for(let i=0; i<lecturesCompleted.length; i++) { %>
+            <tr>
+              <th scope="row"><%= lecturesCompleted[i][0] %></th>
+              <td><%= lecturesCompleted[i][1] %></td>
+            </tr>
+          <% } %>
+        </tbody>
+      </table>
+    </div>
+
+  </body>
+</html>

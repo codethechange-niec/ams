@@ -1,0 +1,18 @@
+{
+  "name": "attendance",
+  "version": "1.0.0",
+  "description": "This is an attendance management system for college.",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Mohit Singh",
+  "license": "ISC",
+  "dependencies": {
+    "date-fns": "^2.4.1",
+    "ejs": "^2.6.1",
+    "express": "^4.16.4",
+    "express-session": "^1.16.1",
+    "mysql": "^2.16.0"
+  }
+}

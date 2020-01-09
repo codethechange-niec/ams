@@ -1,0 +1,24 @@
+<%- include("partials/header.ejs"); -%>
+        <h2 style="text-align:center;color:brown;">Check Attendance</h2>
+        <% if(error_msg) { %>
+          <%= error_msg %>
+        <% } %>
+        <form class="card" action="checkAttendance" method="post">
+          <div class="form-group">
+              <div class="col">
+                  <input type="text" class="form-control" placeholder="Roll no" name="rollNo">
+              </div>
+          </div>
+          <div class="form-group">
+              <div class="col">
+                  <input type="text" class="form-control" placeholder="Section" name="section">
+              </div>
+          </div>
+          <div class="form-group">
+              <div class="col">
+                  <input type="text" class="form-control" placeholder="Department" name="department">
+              </div>
+          </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+<%- include("partials/footer.ejs"); -%>

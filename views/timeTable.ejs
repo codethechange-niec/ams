@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+      crossorigin="anonymous"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Podkova&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Cabin&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Righteous&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Arvo&display=swap"
+      rel="stylesheet"
+    />
+    <!-- <link href="main.css" rel="stylesheet" /> -->
+  </head>
+
+  <body>
+    <% let col1 = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"] %>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <a class="navbar-brand" href="#">AMS</a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-toggle="collapse"
+        data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="#"
+              >Home <span class="sr-only">(current)</span></a
+            >
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Admin</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Teacher</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Student</a>
+          </li>
+        </ul>
+        <ul class="navbar-nav  justify-content-end">
+          <li class="nav-item">
+            <a class="nav-link" href="#">
+              <img
+                src="https://img.icons8.com/officel/30/000000/add-user-male.png"
+                style="margin-left: 10px"
+              />
+              Login or Sign Up</a
+            >
+          </li>
+        </ul>
+      </div>
+    </nav>
+    <div class="container">
+      <div class="card w-100 card border-primary mb-3" style="margin-top:50px">
+        <div class="card-body">
+          <h3 class="card-title" style="margin-bottom: 20px">
+            <img
+              style="margin-right:20px"
+              src="https://img.icons8.com/officel/40/000000/business-contact.png"
+            />Your Details
+          </h3>
+          <div class="row" style="font-family: 'Podkova', serif;">
+            <div class="col-lg-6 col-sm-12">
+              <div>
+                <h5 style="display:inline-block">Name :</h5>
+                <span>Ms. XYZ</span>
+              </div>
+
+              <div>
+                <h5 style="display:inline-block">ID :</h5>
+                <span>123</span>
+              </div>
+
+              <div>
+                <h5 style="display:inline-block">Subject Taken :</h5>
+                <span>STLD , EDC</span>
+              </div>
+
+              <div>
+                <h5 style="display:inline-block">Total Lectures :</h5>
+                <span>134</span>
+              </div>
+            </div>
+            <div class="col-lg-6 col-sm-12">
+              <h5>Section Taught</h5>
+              <ul>
+                <li>S10</li>
+                <li>S9</li>
+                <li>T10</li>
+                <li>F10</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row" style="margin-bottom:70px">
+        <div
+          class="table-responsive col-lg-9 col-sm-12"
+          style="margin-top:50px"
+        >
+          <h3 style="text-decoration:underline">Time Table</h3>
+
+          <table class="table" style="margin-top:50px">
+            <thead>
+              <tr
+                class="bg-success"
+                style="color:white;font-family: 'Righteous', cursive;"
+              >
+                <th>Days</th>
+                <th>Lecture 1</th>
+                <th>Lecture 2</th>
+                <th>Lecture 3</th>
+                <th>Lecture 4</th>
+                <th>Lecture 5</th>
+                <th>Lecture 6</th>
+                <th>Lecture 7</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% for(let i=0; i<timeTable.length; i++) { %>
+                <tr>
+                  <th scope="row"><%= col1[i] %></th>
+                  <% for(let j=1; j<8; j++) { %>
+                    <td>
+                      <a <%= (timeTable[i][`lec${j}`]!='-')?`href="attendance/lec${j}/${timetable[i][]"` %>>
+
+                      <a href="attendance/<%= `lec${j}` %>/<%= timeTable[i][`lec${j}`] %>" >
+                        <%= timeTable[i][`lec${j}`] %>
+                      </a>
+                    </td>
+                  <% } %>
+                </tr>
+              <% } %>
+            </tbody>
+          </table>
+        </div>
+        <div
+          class="table-responsive col-lg-3 col-sm-12"
+          style="margin-top:50px"
+        >
+          <h3 style="text-decoration:underline">Section vs Lecture</h3>
+
+          <table class="table" style="margin-top:50px">
+            <tr
+              class="bg-danger"
+              style="color:white;font-family: 'Righteous', cursive;"
+            >
+              <th>Section</th>
+              <th>Lectures</th>
+            </tr>
+            <tbody>
+              <% for(let i=0; i<lecturesCompleted.length; i++) { %>
+                <tr>
+                  <th scope="row"><a href="/teacher/<%= lecturesCompleted[i][0] %>"><%= lecturesCompleted[i][0] %></a></th>
+                  <td><%= lecturesCompleted[i][1] %></td>
+                </tr>
+              <% } %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </body>
+  <script
+    src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+    crossorigin="anonymous"
+  ></script>
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+    crossorigin="anonymous"
+  ></script>
+  <script
+    src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+    crossorigin="anonymous"
+  ></script>
+</html>
