@@ -71,76 +71,34 @@
       <h1 style="margin-top:40px;border-bottom: 3px solid grey">
         Attendence Results
       </h1>
-<div class="row">
-  <% for(let i=0; i<attendanceList.length; i++) { %>
-    <div class="card w-50 col-lg-5 col-12 " style="margin: 20px  auto">
-      <div class="card-body">
-        <div class="float-right">
-          <h5 style="display:inline-block">Taught By :</h5>
-          <span>Ms. ABC</span>
-        </div>
-        <h4 class="card-title"><%= attendanceList[i][0] %></h4>
-        <div>
-          <h5 style="display:inline-block">Lectures :</h5>
-          <span><%= attendanceList[i][1] %></span>
-        </div>
-        <div>
-          <h5 style="display:inline-block">Percentage :</h5>
-          <span><%= attendanceList[i][2] %></span>
-        </div>
-        <div>
-          <h5 style="display:inline-block">Taught By :</h5>
-          <span>Ms. ABC</span>
-        </div>
+      <div class="row">
+        <% for(let i=0; i<attendanceList.length; i++) { %>
+          <div class="card w-50 col-lg-5 col-12 " style="margin: 20px  auto">
+            <div class="card-body">
+              <div class="float-right">
+                <h5 style="display:inline-block">Taught By :</h5>
+                <span>Ms. ABC</span>
+              </div>
+              <h4 class="card-title"><%= attendanceList[i][0] %></h4>
+              <div>
+                <h5 style="display:inline-block">Lectures Attended:</h5>
+                <span><%= attendanceList[i][1] %></span>
+              </div>
+              <div>
+                <h5 style="display:inline-block">Percentage :</h5>
+                <span><%= attendanceList[i][2] %></span>
+              </div>
+              <!-- <div>
+                <h5 style="display:inline-block">Taught By :</h5>
+                <span>Ms. ABC</span>
+              </div> -->
 
-      </div>
-    </div>
-  <% } %>
-  <div class="card w-50 col-lg-5 col-12" style="margin: 20px auto">
-    <div class="card-body">
-      <div class="float-right">
-        <h5 style="display:inline-block">Taught By :</h5>
-        <span>Ms. ABC</span>
-      </div>
-      <h4 class="card-title">TOC</h4>
-
-      <div>
-        <h5 style="display:inline-block">Lectures :</h5>
-        <span>123</span>
-      </div>
-      <div>
-        <h5 style="display:inline-block">Percentage :</h5>
-        <span>123</span>
-      </div>
-      <div>
-        <h5 style="display:inline-block">Taught By :</h5>
-        <span>Ms. ABC</span>
+            </div>
+          </div>
+        <% } %>
       </div>
 
     </div>
-  </div>
-  <div class="card w-50 col-lg-5 col-12" style="margin: 20px auto">
-    <div class="card-body">
-      <div class="float-right">
-        <h5 style="display:inline-block">Taught By :</h5>
-        <span>Ms. ABC</span>
-      </div>
-      <h4 class="card-title">DBMS</h4>
-
-      <div>
-        <h5 style="display:inline-block">Lectures :</h5>
-        <span>123</span>
-      </div>
-      <div>
-        <h5 style="display:inline-block">Percentage :</h5>
-        <span>123</span>
-      </div>
-
-    </div>
-  </div>
-</div>
-
-</div>
     </div>
   </body>
   <script

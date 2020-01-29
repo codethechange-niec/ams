@@ -10,9 +10,10 @@
   "license": "ISC",
   "dependencies": {
     "date-fns": "^2.4.1",
-    "ejs": "^2.6.1",
+    "ejs": "^2.7.4",
     "express": "^4.16.4",
     "express-session": "^1.16.1",
-    "mysql": "^2.16.0"
+    "mysql": "^2.16.0",
+    "nodemon": "^2.0.2"
   }
 }

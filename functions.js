@@ -2,6 +2,13 @@
 
 const mysql = require("mysql")
 
+const database = mysql.createConnection({
+  host : "localhost",
+  user : "root",
+  password : "Root@987",
+  database : "ams"
+});
+
 function getdate() {
   const today = new Date();
   const options = { year: 'numeric', month: 'short', day: '2-digit' };
@@ -41,16 +48,11 @@ exports.getAttendance = function getAttendance(rollNo, section, subject) {
   return new Promise((resolve, reject) => {
     let sql = `select count(a${rollNo}) from section_${section}_attendance where lecture='${subject}' and a${rollNo}='Present'`;
     console.log(sql);
-    const database = mysql.createConnection({
-      host : "localhost",
-      user : "ODBC",
-      password : "",
-      database : "college"
-    });
+
     database.query(sql, (err, result) => {
       if(err) resolve("Invalid")
       let presentDays = result[0][`count(a${rollNo})`];
-      console.log(presentDays);
+      console.log("present days:", presentDays);
       resolve(presentDays);
     })
   })
@@ -59,29 +61,19 @@ exports.getAttendance = function getAttendance(rollNo, section, subject) {
 exports.getTotalLectures = function getTotalLectures(subject, section, department) {
 
   return new Promise((resolve, reject) => {
-    const database = mysql.createConnection({
-      host : "localhost",
-      user : "ODBC",
-      password : "",
-      database : "college"
-    });
+
     database.query(`select total_lectures from department_${department} where Subject='${subject}' and Section='${section}'`, (err, result) => {
       if(err) {console.log(err); reject("sql error")}
-      console.log(result);
+      // console.log(result);
       if(result.length)
       {
         let totalLectures = result[0].total_lectures;
-        //console.log(totalLectures);
+        console.log("Total lecture:", totalLectures);
         resolve(totalLectures);
       }
     });
   })
 }
 
-exports.getConnection = () => {return mysql.createConnection({
-    host : "localhost",
-    user : "ODBC",
-    password : "",
-    database : "college"
-})}
+exports.getConnection = () => {return database}
 //console.log(getdate());

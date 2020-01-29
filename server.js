@@ -9,9 +9,9 @@ const util = require(__dirname + "/functions");
 
 const db = mysql.createConnection({
   host : "localhost",
-  user : "ODBC",
-  password : "",
-  database : "college"
+  user : "root",
+  password : "Root@987",
+  database : "ams"
 });
 
 const TWO_HOURS = 1000*60*60*2;
@@ -107,7 +107,7 @@ app.get("/admin", (req, res) => {
 })
 
 app.get('/practice', (req, res) => {
-  res.render("admin/create_section")
+  res.render("sectionDetails", {section: "s10"});
 })
 
 function addUser(userID, password) {

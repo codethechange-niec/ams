@@ -65,7 +65,7 @@ router.post("/", redirectHome, (req, res) => {
           for(let i=0; i<result.length; i++) {
             for(let j=1; j<8; j++) {
               if(result[i][`lec${j}`] != "-") {
-                util.addElement(req.session.userSections, result[i][`lec${j}`].split(" ")[1]);
+                util.addElement(req.session.userSections, result[i][`lec${j}`].split(" ")[1].toLowerCase());
               }
             }
           }

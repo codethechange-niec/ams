@@ -31,6 +31,7 @@ router.post("/checkAttendance", (req, res) => {
     let subjectList = result;
     let presentDays;
     let totalLectures;
+    let percentage;
 
     util.getConnection().query(`select studentName from section_${section} where studentRollNo='${rollNo}'`, async (err, result) => {
       if(result.length == 0) {
@@ -41,9 +42,16 @@ router.post("/checkAttendance", (req, res) => {
       else {
         for(let i=0; i<subjectList.length; i++) {
 
-          presentDays = await util.getAttendance(rollNo, section, subjectList[i].subject)
           totalLectures = await util.getTotalLectures(subjectList[i].subject, section, department)
-          let percentage = Number.parseFloat(presentDays*100/totalLectures).toPrecision(4);
+
+          if(totalLectures == 0) {
+            presentDays="No attendance taken";
+            percentage="NA";
+          } else {
+            presentDays = await util.getAttendance(rollNo, section, subjectList[i].subject)
+            percentage = Number.parseFloat(presentDays*100/totalLectures).toPrecision(4);
+          }
+
           attendanceList.push([subjectList[i].subject, presentDays, percentage])
           console.log(attendanceList);
         }

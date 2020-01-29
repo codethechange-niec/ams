@@ -35,7 +35,7 @@ module.exports.getSubjects = (department, id, section="") => {
         if(result.length === 0) {
           resolve(0)
         } else {
-          resolve((result.length===1)?result[0]:result)
+          resolve(result)
         }
       }
     })

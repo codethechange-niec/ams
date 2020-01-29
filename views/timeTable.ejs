@@ -50,7 +50,7 @@
         <ul class="navbar-nav mr-auto">
           <li class="nav-item active">
             <a class="nav-link" href="#"
-              >Home <span class="sr-only">(current)</span></a
+              >Home <span class="sr-only">current</span></a
             >
           </li>
           <li class="nav-item">
@@ -148,9 +148,8 @@
                   <th scope="row"><%= col1[i] %></th>
                   <% for(let j=1; j<8; j++) { %>
                     <td>
-                      <a <%= (timeTable[i][`lec${j}`]!='-')?`href="attendance/lec${j}/${timetable[i][]"` %>>
-
-                      <a href="attendance/<%= `lec${j}` %>/<%= timeTable[i][`lec${j}`] %>" >
+                      <a href="<%= timeTable[i][`lec${j}`]!='-'?`attendance/lec${j}/${timeTable[i][`lec${j}`]}`:'' %>">
+                      <!-- <a <%= timeTable[i][`lec${j}`]!='-'?`href="attendance/lec${j}/${timeTable[i][j]}"`:'' %> > -->
                         <%= timeTable[i][`lec${j}`] %>
                       </a>
                     </td>
@@ -172,13 +171,15 @@
               style="color:white;font-family: 'Righteous', cursive;"
             >
               <th>Section</th>
+              <th>Subject</th>
               <th>Lectures</th>
             </tr>
             <tbody>
               <% for(let i=0; i<lecturesCompleted.length; i++) { %>
                 <tr>
-                  <th scope="row"><a href="/teacher/<%= lecturesCompleted[i][0] %>"><%= lecturesCompleted[i][0] %></a></th>
-                  <td><%= lecturesCompleted[i][1] %></td>
+                  <th scope="row"><a href="/teacher/<%= lecturesCompleted[i][0] %>/<%= lecturesCompleted[i][1] %>"><%= lecturesCompleted[i][0].toUpperCase() %></a></th>
+                  <td><%= lecturesCompleted[i][1].toUpperCase() %></td>
+                  <td><%= lecturesCompleted[i][2] %></td>
                 </tr>
               <% } %>
             </tbody>
