@@ -28,12 +28,15 @@
       rel="stylesheet"
     />
     <!-- <link href="main.css" rel="stylesheet" /> -->
+    <style>
+
+    </style>
   </head>
 
   <body>
     <% let col1 = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"] %>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-      <a class="navbar-brand" href="#">AMS</a>
+      <a class="navbar-brand" href="/">AMS</a>
       <button
         class="navbar-toggler"
         type="button"
@@ -47,33 +50,73 @@
       </button>
 
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto">
-          <li class="nav-item active">
-            <a class="nav-link" href="#"
-              >Home <span class="sr-only">current</span></a
-            >
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Admin</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Teacher</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Student</a>
+        <ul class="navbar-nav mr-auto" >
+          <li class="nav-item active" id="home" style="display: none;">
+            <a class="nav-link" href="/teacher/timeTable"
+              >Home <span class="sr-only">current</span>
+            </a>
           </li>
         </ul>
-        <ul class="navbar-nav  justify-content-end">
-          <li class="nav-item">
-            <a class="nav-link" href="#">
-              <img
-                src="https://img.icons8.com/officel/30/000000/add-user-male.png"
-                style="margin-left: 10px"
-              />
-              Login or Sign Up</a
-            >
+
+
+        <!-- AJAX login check -->
+        <ul class="navbar-nav  justify-content-end" id="userDropdown" style="display: none;">
+          <li class="nav-item dropdown">
+              <div class="dropdown">
+                <button class="btn btn-success dropdown-toggle" data-toggle="dropdown" id="username">ERROR</button>
+              <div class="dropdown-menu">
+                <form method="POST" action="/users/logout">
+                  <button type="submit" class="btn btn-danger">Logout</button>
+                </form>
+              </div>
+              </div>
           </li>
         </ul>
+
+        <script>
+
+          checkLogin();
+
+          function checkLogin() {
+
+            var xhttp = new XMLHttpRequest();
+
+            xhttp.onreadystatechange = function() {
+              if(this.readyState == 4 && this.status == 200) {
+                // console.log(this.responseText);
+                var res = JSON.parse(this.responseText);
+                if(res.logStatus == 1) {
+                  userIn(res);
+                }
+
+              }
+            }
+
+            xhttp.open("POST", "/users/checkLogStatus", true);
+            xhttp.send();
+          }
+
+          function userIn(details) {
+
+            //set navbar home anchor
+            document.getElementById('home').style.display = "";
+
+            //set navbar options
+            displayUserInfo(details);
+
+          }
+
+          function displayUserInfo(details) {
+            var element = document.getElementById('userDropdown');
+            element.style.display = "";
+
+            var name = document.getElementById('username');
+            name . innerHTML = details.userName;
+          }
+
+        </script>
+
+
       </div>
     </nav>
     <div class="container">

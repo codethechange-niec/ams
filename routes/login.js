@@ -10,7 +10,7 @@ const router = express.Router();
 
 const redirectLogin = (req, res, next) => {
   if(!req.session.userId) {
-    res.redirect('/login')
+    res.redirect('/')
   }
   else {
     next()
@@ -28,19 +28,19 @@ const redirectHome = (req, res, next) => {
 
 router.get("/", redirectHome, (req, res) => {
   // if(loggedIn) res.redirect("/");
-  res.render("home", {error_msg: ""});
+  res.redirect("/")
 });
 
 router.post("/", redirectHome, (req, res) => {
   let userId = req.body.userid;
   let password = req.body.password;
-  util.getConnection().query(`select userID, userType, department from users where userid='${userId}' and password='${password}'`, async (err, result) => {
+  util.getConnection().query(`select userID, Name, userType, department from users where userid='${userId}' and password='${password}'`, async (err, result) => {
     if(err) throw err;
     if(result.length === 0) {
       res.render("home", {error_msg: "Invalid username or password"});
     }
     else {
-      console.log("User " + userId + " logged in");
+      console.log("User " + JSON.stringify(result) + " logged in");
       req.session.userId = userId;
       req.session.userName = result[0].Name;
       req.session.department = result[0].department;
@@ -65,7 +65,7 @@ router.post("/", redirectHome, (req, res) => {
           for(let i=0; i<result.length; i++) {
             for(let j=1; j<8; j++) {
               if(result[i][`lec${j}`] != "-") {
-                util.addElement(req.session.userSections, result[i][`lec${j}`].split(" ")[1].toLowerCase());
+                util.addElement(req.session.userSections, result[i][`lec${j}`].split(" ")[1].toUpperCase());
               }
             }
           }
@@ -77,5 +77,36 @@ router.post("/", redirectHome, (req, res) => {
   });
 });
 
+
+router.post('/logout', redirectLogin, (req, res) => {
+
+  req.session.destroy()
+  res.clearCookie(process.env.SESS_NAME)
+
+  res.redirect('/');
+
+})
+
+
+
+//AJAX routes
+router.post('/checkLogStatus', (req, res) => {
+
+  var obj = {};
+
+  if(req.session.userId) {
+    obj.logStatus = 1;
+    obj.userType = "teacher";
+    obj.userName = req.session.userName;
+    obj.userId = req.session.userId;
+  } else {
+    obj.logStatus = 0;
+  }
+
+  console.log("log status:", obj)
+
+  res.send(obj);
+
+})
 
 module.exports = router;

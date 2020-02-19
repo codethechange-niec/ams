@@ -1,32 +1,67 @@
-// var x = require('./dbfunctions/helper')
+var util = require('./functions');
 
-var obj = {
-  name: "Mohit",
-  age: 19,
-  branch: "it",
-  course: "btech",
-  year: 3
+console.log("working");
+// (async () => {
+//   var resposne = checkValidEntry("s10", "DS", date="", 3);
+//   console.log(resposne);
+// })();
+
+async function departmentTableEntries(department="it", id=1) {
+
+  util.getConnection().query(`select * from teacher_${id}`, (err, result) => {
+    if(err) {
+      console.log(err);
+    } else {
+
+      console.log(result);
+
+      let inputArr = [];
+
+      for(let i=0; i<result.length; i++) {
+        delete result[i].day_no;
+        delete result[i].day;
+        for(let prop in result[i]) {
+
+          console.log(result[i][prop])
+
+          if(result[i][prop] != '-') {
+            let cell = result[i][prop].split(' ');
+            let subject = cell[0];
+            let section = cell[1];
+
+            if(cell.length>2) {
+              section += ' ' + cell[2];
+              subject += ' ' + cell[3];
+            }
+
+            if(inputArr.findIndex(element => element.section==section && element.subject==subject) == -1)
+              inputArr.push({section: section, subject: subject});
+          }
+
+        }
+      }
+
+      console.log(inputArr);
+
+      for(let i=0; i<inputArr.length; i++) {
+
+        util.getConnection().query(`insert into department_${department} values('${id}', '${inputArr[i].section}', '${inputArr[i].subject}', 0)`, (err, result) => {
+          if(err) {
+            console.log(err)
+          } else {
+            console.log("Entry:", inputArr[i], "pushed");
+          }
+        })
+      }
+
+
+    }
+  })
 }
 
-// for(let key in obj) {
-//   console.log(key)
-// }
+departmentTableEntries()
 
-// console.log('string'.substring(0, 3))
+let obj = {name:"mohit", id:1}
 
-var details = {
-  students: ['a', 'b', 'c']
-}
-
-var studentString = ""
-for(let student of details.students) {
-  studentString += `a${student} varchar(20),`
-}
-
-console.log(`create table section_${details.section}_attendance (
-  Sno int primary key auto_increment,
-  lecture varchar(40) not null,
-  lecture_date date not null,
-  lecture_no varchar(10) not null,
-  ${studentString.substr(0, studentString.length-1)}
-)`)
+delete obj.name;
+// console.log(obj)

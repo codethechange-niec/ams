@@ -10,7 +10,7 @@ const router = express.Router();
 
 const redirectLogin = (req, res, next) => {
   if(!req.session.userId) {
-    res.redirect('/login')
+    res.redirect('/users')
   }
   else {
     next()
@@ -21,7 +21,7 @@ const sectionAccessibility = (req, res, next) => {
 
   var selectedSection = req.params.section;
 
-  if(!req.session.userSections.includes(selectedSection)) {
+  if(req.session.userSections.findIndex(element => selectedSection.toUpperCase().startsWith(element)) == -1 ) {
     return res.send("<h2>You cannot access that section</h2>");
   }
   else {
@@ -109,7 +109,7 @@ const testMiddleware = (req, res) => {
   res.send("1")
 }
 
-router.get("/attendance/:lecture/:cell", (req, res) => {
+router.get("/attendance/:lecture/:cell", async (req, res) => {
 
 
   //TODO: split last url param to store section, subject, group if cell contains lab
@@ -129,12 +129,25 @@ router.get("/attendance/:lecture/:cell", (req, res) => {
   req.session.lecture = req.params.lecture;
 
 
-  if(!req.session.userSections.includes(req.session.selectedSection)) {
+  if(req.session.userSections.findIndex(element => req.session.selectedSection.toUpperCase().startsWith(element)) == -1 ) {
     return res.send("<h2>You cannot access that section</h2>");
   }
 
 
-  var sqlGrpString = req.session.userClassGrp?` where grp='${req.session.userClassGrp}'`:'';
+  var valid_entry = await checkValidEntry(req.session.selectedSection, req.session.userSubject, date="", req.session.lecture[3]);
+
+  if(valid_entry == -1) {
+    return res.send("Some error occured")
+  } else if(!valid_entry) {
+    return res.send(`
+      attendance already taken
+      <br>
+      <a href='/teacher/timeTable'>home</a>
+    `);
+  }
+
+
+  var sqlGrpString = req.session.userClassGrp?` where studentRollNo like '${req.session.userClassGrp.toLowerCase()}%'`:'';
   // console.log("sqlgrpstring", sqlGrpString);
 
   util.getConnection().query(`select * from section_${req.session.selectedSection}` + sqlGrpString, (err, result) => {
@@ -170,49 +183,54 @@ router.post("/attendance", async (req, res) => {
 
   for(let i=0; i<req.session.totalStudents; i++) {
     if(attendStatus[`${req.session.Students[i].studentRollNo}`]) {
-      attendanceList += "'Present', ";
+      attendanceList += "'P', ";
     }
     else {
-      attendanceList += "'Absent', ";
+      attendanceList += "'A', ";
     }
-    rollNumbers += `a${req.session.Students[i].studentRollNo}, ` ;
+    rollNumbers += `${req.session.Students[i].studentRollNo}, ` ;
   }
 
   console.log(req.session);
 
-  let valid_entry = await new Promise((resolve, reject) => {
-    util.getConnection().query(`select SNo from section_${req.session.selectedSection}_attendance where lecture='${req.session.userSubject}_${util.getDate()}_${req.session.lecture}'`, (err, result) => {
-      if(err) {
-        console.log(err);
-      }
-      if(result.length === 1) {
-        res.send(`
-          attendance already taken
-          <br>
-          <a href='timeTable'>home</a>
-          `);
-          resolve(0)
-      }
-      else {
-        resolve(1)
-      }
-    })
-  })
 
-  if(!valid_entry) return;
+  //check if attendance had already taken
+  var valid_entry = await checkValidEntry(req.session.selectedSection, req.session.userSubject, date="", req.session.lecture[3]);
+
+  if(valid_entry == -1) {
+    return res.send("Some error occured")
+  } else if(!valid_entry) {
+    return res.send(`
+      attendance already taken
+      <br>
+      <a href='timeTable'>home</a>
+    `);
+  }
+
 
   let sql = `insert into section_${req.session.selectedSection}_attendance (lecture, lecture_date, lecture_no, userID, ${rollNumbers.substring(0, rollNumbers.length-2)}) values('${req.session.userSubject}', '${dateFns.format(new Date(), 'yyyy:MM:dd')}', '${Number(req.session.lecture[3])}', '${req.session.userId}', ${attendanceList.substring(0, attendanceList.length-2)})`;
 
-  util.getConnection().query(sql);
+  util.getConnection().query(sql, (err, result) => {
+    if(err) {
+      console.log(err);
+      res.send(`Error, ${err.code}`)
+    } else {
 
-  res.send(`${req.body}
-    return to <a href='/teacher/timeTable'>Home</a>`);                         //needs to be change
+      res.send(`${req.body}
+        return to <a href='/teacher/timeTable'>Home</a>`);                         //needs to be change
 
-  // let total_lectures = await util.getTotalLectures(req.session.userSubject, req.session.selectedSection, req.session.department);
+      // let total_lectures = await util.getTotalLectures(req.session.userSubject, req.session.selectedSection, req.session.department);
 
-  let sql2 = `update department_${req.session.department} set total_lectures=total_lectures+1 where Teacher_id='${req.session.userId}' and section='${req.session.selectedSection} ${req.session.userClassGrp}' and subject='${req.session.userSubject}'`;
+      let sql2 = `update department_${req.session.department} set total_lectures=total_lectures+1 where Teacher_id='${req.session.userId}' and section='${req.session.selectedSection} ${req.session.userClassGrp}' and subject='${req.session.userSubject}'`;
 
-  util.getConnection().query(sql2);
+      util.getConnection().query(sql2, (err, result) => {
+        if(err) {
+          console.log(err);
+        }
+      });
+
+    }
+  });
 });
 
 
@@ -220,7 +238,7 @@ router.get("/:section/:subject", sectionAccessibility, async (req, res) => {
 
   var param1 = req.params.section.split(" ");
 
-  var section = param1[0];
+  var section = param1[0].toLowerCase();
 
   var grp = "";
   if(param1.length == 2) {
@@ -234,9 +252,16 @@ router.get("/:section/:subject", sectionAccessibility, async (req, res) => {
 
   console.log(req.session.department, req.session.userId, section, subject);
 
+  var totalLectures = await util.getTotalLectures(subject[0].subject, section + " " + grp, req.session.department)
+
+  if(totalLectures == 0) {
+    return res.send("No attendance taken for this lecture")
+  }
+
   var sectionAttendance = await db.getSectionDetails(section, subject[0].subject);
 
   console.log("section details:", sectionAttendance);
+
 
   if(Array.isArray(sectionAttendance) && sectionAttendance[0] === -1) {
     res.send(`Error: ${sectionAttendance[1]}`)
@@ -250,7 +275,8 @@ router.get("/:section/:subject", sectionAccessibility, async (req, res) => {
     var keys = Object.keys(sectionAttendance[0])
 
     //filterout only rollnumber keys
-    keys.splice(0,6)
+    keys.splice(0,5)
+
 
     //filling all lecture dates
     for(let i=0; i<sectionAttendance.length; i++) {
@@ -262,22 +288,27 @@ router.get("/:section/:subject", sectionAccessibility, async (req, res) => {
 
       let tempArr = [];
 
-      //inserting rollnumbers
-      tempArr[0] = keys[j].substring(1, keys[j].length);
+      if(keys[j][0].toLowerCase() == grp.toLowerCase() || !grp) {
 
-      //inserting present and absent states to roll numbers
-      for(let i=0; i<sectionAttendance.length; i++) {
-        tempArr[i+1] = sectionAttendance[i][keys[j]]
+              //inserting rollnumbers
+              tempArr[0] = keys[j].substring(1, keys[j].length);
+
+              //inserting present and absent states to roll numbers
+              for(let i=0; i<sectionAttendance.length; i++) {
+                tempArr[i+1] = sectionAttendance[i][keys[j]]
+              }
+
+              arr.push(tempArr)
       }
-
-      arr.push(tempArr)
     }
 
-    var totalLectures = await util.getTotalLectures(subject[0].subject, section, req.session.department)
+    // console.log("array:", arr)
 
-    if(gpr) {
-      var section;
-    }
+
+    // if(grp) {
+    //   var section;
+    // }
+
 
 
     //calculating total days attended
@@ -287,7 +318,7 @@ router.get("/:section/:subject", sectionAccessibility, async (req, res) => {
       for(let j=1; j<arr[i].length; j++) {
 
         // if(arr[i])
-        if(arr[i][j] === 'Present') {
+        if(arr[i][j] === 'P') {
           attend++;
         }
       }
@@ -309,5 +340,27 @@ router.get("/:section/:subject", sectionAccessibility, async (req, res) => {
   }
 
 })
+
+
+async function checkValidEntry(section, subject, date, lecture_no) {
+
+  let valid_entry = await new Promise((resolve, reject) => {
+    util.getConnection().query(`select SNo from section_${section}_attendance where lecture='${subject}' and lecture_date='${dateFns.format(new Date(), 'yyyy-MM-dd')}' and lecture_no=${lecture_no}`, (err, result) => {
+      if(err) {
+        console.log(err);
+        resolve(-1)
+      }
+      if(result.length >= 1) {
+        resolve(0)
+      }
+      else {
+        resolve(1)
+      }
+    })
+  })
+  return valid_entry;
+}
+
+
 
 module.exports = router;

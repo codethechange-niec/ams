@@ -14,35 +14,56 @@ router.get("/checkAttendance", (req, res) => {
 router.post("/checkAttendance", (req, res) => {
   let rollNo = req.body.rollNo;
   let section = req.body.section;
-  let department = req.body.department;
+  let department = req.body.department.toLowerCase();
   let attendanceList = [];
 
-  util.getConnection().query(`select subject from department_${department} where section='${section}'`, async (err, result) => {
-
-    if(!result) {
-      res.render("home", {error_msg: "Invalid department"});
+  util.getConnection().query(`select studentName, studentRollNo from section_${section} where studentRollNo like '%${rollNo}'`, async (err, result) => {
+    if(result.length == 0) {
+      console.log("Invalid Stundent Roll Number");
+      res.render("home", {error_msg: "Stundent Roll Number not listed in given department and section"})
       return;
     }
-    else if(result.length === 0) {
-      res.render("home", {error_msg: "Invalid section "});
-      return;
+    else if(err) {
+      console.log(err);
+      res.send("Error:", err.code)
     }
-    console.log(result);
-    let subjectList = result;
-    let presentDays;
-    let totalLectures;
-    let percentage;
+    else {
 
-    util.getConnection().query(`select studentName from section_${section} where studentRollNo='${rollNo}'`, async (err, result) => {
-      if(result.length == 0) {
-        console.log("Invalid Stundent Roll Number");nodemo
-        res.render("home", {error_msg: "Stundent Roll Number not listed in given department and section"})
-        return;
-      }
-      else {
+      let temp = result[0].studentRollNo[0].toUpperCase();
+
+      util.getConnection().query(`select subject from department_${department} where section='${section}' or section='${section} ${temp}'`, async (err, result) => {
+
+        if(err) {
+
+          if(err.errno == 1146)
+            res.render("home", {error_msg: "Invalid department"});
+          else {
+            console.log(err);
+            res.send(err.code)
+          }
+
+          return;
+        }
+        else if(result.length === 0) {
+          res.render("home", {error_msg: "Invalid section "});
+          return;
+        }
+        console.log(result);
+        let subjectList = result;
+        let presentDays;
+        let totalLectures;
+        let percentage;
+        let grp='';
+
         for(let i=0; i<subjectList.length; i++) {
 
-          totalLectures = await util.getTotalLectures(subjectList[i].subject, section, department)
+          if(subjectList[i].subject.indexOf("LAB") == -1) {
+            grp = "";
+          } else {
+            grp = temp;
+          }
+
+          totalLectures = await util.getTotalLectures(subjectList[i].subject, section+" "+grp, department)
 
           if(totalLectures == 0) {
             presentDays="No attendance taken";
@@ -56,9 +77,8 @@ router.post("/checkAttendance", (req, res) => {
           console.log(attendanceList);
         }
         res.render("attendanceList", {attendanceList: attendanceList});
-      }
-    })
-
+      })
+    }
   });
 });
 

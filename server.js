@@ -59,7 +59,7 @@ const student = require(__dirname + "/routes/student.js")
 app.use("/student", student)
 
 const login = require(__dirname + "/routes/login.js")
-app.use("/login", login)
+app.use("/users", login)
 
 //
 // app.get("/login", redirectHome, (req, res) => {

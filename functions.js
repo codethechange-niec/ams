@@ -2,7 +2,7 @@
 
 const mysql = require("mysql")
 
-const database = mysql.createConnection({
+ const database = mysql.createConnection({
   host : "localhost",
   user : "root",
   password : "Root@987",
@@ -46,14 +46,16 @@ exports.addElement = (arr, element) => {
 exports.getAttendance = function getAttendance(rollNo, section, subject) {
 
   return new Promise((resolve, reject) => {
-    let sql = `select count(a${rollNo}) from section_${section}_attendance where lecture='${subject}' and a${rollNo}='Present'`;
+    let sql = `select count(${rollNo}) from section_${section}_attendance where lecture='${subject}' and ${rollNo}='P'`;
     console.log(sql);
 
     database.query(sql, (err, result) => {
-      if(err) resolve("Invalid")
-      let presentDays = result[0][`count(a${rollNo})`];
-      console.log("present days:", presentDays);
-      resolve(presentDays);
+      if(err) resolve(err)
+      else {
+        let presentDays = result[0][`count(${rollNo})`];
+        console.log("present days:", presentDays);
+        resolve(presentDays);
+      }
     })
   })
 }
@@ -70,10 +72,13 @@ exports.getTotalLectures = function getTotalLectures(subject, section, departmen
         let totalLectures = result[0].total_lectures;
         console.log("Total lecture:", totalLectures);
         resolve(totalLectures);
+      } else {
+        resolve(0)
       }
     });
   })
 }
+
 
 exports.getConnection = () => {return database}
 //console.log(getdate());
