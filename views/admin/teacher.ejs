@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Admins panel</title>
+		<!-- Latest compiled and minified CSS -->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+		<!-- jQuery library -->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+		<!-- Popper JS -->
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+		<!-- Latest compiled JavaScript -->
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+		<!-- Font Awesome -->
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css">
+		<!--Map page css-->
+
+
+		<!-- including stylesheets -->
+		<link rel="stylesheet" type="text/css" href="/css/admin/teacher_style.css">
+
+
+
+		<script>
+		function openPage(evt, pageName) {
+		var i, tabcontent, tablinks;
+		tabcontent = document.getElementsByClassName("tabcontent");
+		for (i = 0; i < tabcontent.length; i++) {
+		tabcontent[i].style.display = "none";
+		}
+		tablinks = document.getElementsByClassName("tablinks");
+		for (i = 0; i < tablinks.length; i++) {
+		tablinks[i].className = tablinks[i].className.replace(" active", "");
+		}
+		document.getElementById(pageName).style.display = "block";
+		evt.currentTarget.className += " active";
+		}
+		</script>
+	</head>
+	<body>
+
+		<!-- Navbar header -->
+		<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <a class="navbar-brand" href="/">AMS</a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-toggle="collapse"
+        data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto" id="home" style="display: none;">
+          <li class="nav-item active">
+            <a class="nav-link" href="/teacher/timetable"
+              >Home <span class="sr-only">(current)</span></a
+            >
+          </li>
+				</ul>
+
+				<ul class="navbar-nav mr-auto" id="admin" style="display: none;">
+          <li class="nav-item active">
+            <a class="nav-link" href="/admin/teacher"
+              >Teacher <span class="sr-only">(current)</span></a
+            >
+					</li>
+					<li class="nav-item active">
+            <a class="nav-link" href="/admin/section"
+              >Section <span class="sr-only">(current)</span></a
+            >
+          </li>
+        </ul>
+
+
+        <!-- AJAX login check -->
+        <ul class="navbar-nav  justify-content-end" id="userDropdown" style="display: none;">
+          <li class="nav-item dropdown">
+              <div class="dropdown">
+                <button class="btn btn-success dropdown-toggle" data-toggle="dropdown" id="username">ERROR</button>
+              <div class="dropdown-menu">
+                <form method="POST" action="/users/logout">
+                  <button type="submit" class="btn btn-danger">Logout</button>
+                </form>
+              </div>
+              </div>
+          </li>
+        </ul>
+
+        <script>
+
+          checkLogin();
+
+          function checkLogin() {
+
+            console.log("called")
+
+            var xhttp = new XMLHttpRequest();
+
+            xhttp.onreadystatechange = function() {
+              // console.log(this.readyState, this.status)
+              if(this.readyState == 4 && this.status == 200) {
+                console.log(this.responseText);
+                var res = JSON.parse(this.responseText);
+                if(res.logStatus == 1) {
+                  userIn(res);
+                }
+
+              }
+            }
+
+            xhttp.open("POST", "/users/checkLogStatus", true);
+            xhttp.send();
+          }
+
+          function userIn(details) {
+
+						if(details.userType == "teacher") {
+							//set navbar home anchor
+							document.getElementById('home').style.display = "";
+						}	else if(details.userType == "admin") {
+							//set navbar admin anchors
+							document.getElementById('admin').style.display = "";
+						}
+
+            //set navbar dropdown
+            displayUserInfo(details);
+
+
+          }
+
+          function displayUserInfo(details) {
+            var element = document.getElementById('userDropdown');
+            var name = document.getElementById('username');
+
+            name.innerHTML = details.userName;
+            element.style.display = "";
+          }
+
+        </script>
+      </div>
+    </nav>
+
+
+
+
+		<div id="layout">
+			<div class="container" id="contain">
+				<header>
+					<nav class="navbar navbar-expand-sm bg-primary navbar-dark">
+						<a class="navbar-brand" id="admin-logo" href="#"><strong>ADMIN</strong></a>
+					</nav>
+				</header>
+				<!-- <div id="section">
+					<div class="dropdown">
+						<button class="btn btn-success dropdown-toggle" type="button" data-toggle="dropdown">T-10</button>
+						<ul class="dropdown-menu">
+							<li><a href="#">T-9</a></li>
+							<li><a href="#">T-19</a></li>
+						</ul>
+					</div>
+				</div> -->
+				<div class="tab mt-2">
+					<button class="tablinks" onclick="openPage(event, 'Create')"><span style="color: white;"><strong>CREATE&nbsp;<i class="fas fa-pen"></i></strong></span></button>
+					<button class="tablinks" onclick="openPage(event, 'Delete')"><span style="color: white;"><strong>DELETE&nbsp;<i class="fas fa-trash-alt"></i></strong></span></button>
+					<button class="tablinks" onclick="openPage(event, 'Modify')"><span style="color: white;"><strong>MODIFY&nbsp;<i class="fas fa-edit"></i></strong></span></button>
+				</div>
+				<!--!!!! Create page !!!!-->
+				<div id="Create" class="tabcontent">
+
+					<form action="/admin/teacher/create" method="POST">
+						<div class="container-fluid">
+							<div class="form-group">
+								<label for="name"><strong>Enter your name:</strong></label>
+								<input type="text" class="form-control" id="name" placeholder="Name" style="background: #eaeaea;" name="teacherName" value="abc">
+							</div>
+							<div class="form-group">
+								<label for="id"><strong>Enter your id:</strong></label>
+								<input type="text" class="form-control" id="id" placeholder="Enter id" style="background: #eaeaea;" name="teacherId" value="1">
+							</div>
+							<div class="form-group">
+								<label for="department"><strong>Enter your department:</strong></label>
+								<input type="text" class="form-control" id="department" placeholder="Enter department" style="background: #eaeaea;" name="department" value="it">
+							</div>
+							<div class="form-group">
+								<label for="pwd"><strong>Password:</strong></label>
+								<input type="password" class="form-control" id="pwd" placeholder="Enter password" style="background: #eaeaea;" name="teacherPassword" value="xyz">
+							</div>
+						</div>
+						<div class="container-fluid">
+							<table class="table table-striped table-responsive table-secondary table-hover" border="2" align="center">
+								<tr>
+									<td align="center">
+									<td><strong>8:15-9:10</strong>
+									<td><strong>9:10-10:05</strong>
+									<td><strong>10:05-11:00</strong>
+									<td><strong>11:00-11:30</strong>
+									<td><strong>11:30-12:25</strong>
+									<td><strong>12:25-01:20</strong>
+									<td><strong>01:20-02:15</strong>
+									<td><strong>02:15-03:10</strong>
+								</tr>
+
+								<% var start = 11 %>
+
+								<tr>
+									<td align="center"><strong>MONDAY</strong>
+									<td align="center"><input type="text" class="form-control" name="<%= (start++) %>" id="first">
+														<span id="error" style="color:red"></span>
+									<td align="center"><input type="text" class="form-control" name="<%= (start++) %>">
+									<td align="center"><input type="text" class="form-control" name="<%= (start++) %>" value="DS S10">
+									<td rowspan="6"align="center">L<br>U<br>N<br>C<br>H
+									<td align="center"><input type="text" class="form-control" name="<%= (start++) %>" value="WC F10">
+									<td align="center"><input type="text" class="form-control" name="<%= (start++) %>">
+									<td align="center"><input type="text" class="form-control" name="<%= (start++) %>" value="DS S10 B LAB 1">
+									<td align="center"><input type="text" class="form-control" name="<%= (start++) %>" value="DS S10 B LAB 1">
+								</tr>
+
+								<% start = 21 %>
+
+								<tr>
+									<td align="center"><strong>TUESDAY</strong>
+									<td align="center"><input type="text" class="form-control" name="<%= (start++) %>">
+									<td align="center"><input type="text" class="form-control" name="<%= (start++) %>">
+									<td align="center"><input type="text" class="form-control" name="<%= (start++) %>">
+									<td align="center"><input type="text" class="form-control" name="<%= (start++) %>">
+									<td align="center"><input type="text" class="form-control" name="<%= (start++) %>">
+									<td align="center"><input type="text" class="form-control" name="<%= (start++) %>">
+									<td align="center"><input type="text" class="form-control" name="<%= (start++) %>">
+								</tr>
+
+								<% start = 31 %>
+
+								<tr>
+									<td align="center"><strong>WEDNESDAY</strong>
+									<td align="center"><input type="text" class="form-control" name="<%= (start++) %>">
+									<td align="center"><input type="text" class="form-control" name="<%= (start++) %>">
+									<td align="center"><input type="text" class="form-control" name="<%= (start++) %>">
+									<td align="center"><input type="text" class="form-control" name="<%= (start++) %>">
+									<td align="center"><input type="text" class="form-control" name="<%= (start++) %>">
+									<td align="center"><input type="text" class="form-control" name="<%= (start++) %>">
+									<td align="center"><input type="text" class="form-control" name="<%= (start++) %>">
+								</tr>
+
+								<% start = 41 %>
+
+								<tr>
+									<td align="center"><strong>THURSDAY</strong>
+									<td align="center"><input type="text" class="form-control" name="<%= (start++) %>">
+									<td align="center"><input type="text" class="form-control" name="<%= (start++) %>">
+									<td align="center"><input type="text" class="form-control" name="<%= (start++) %>">
+									<td align="center"><input type="text" class="form-control" name="<%= (start++) %>">
+									<td align="center"><input type="text" class="form-control" name="<%= (start++) %>">
+									<td align="center"><input type="text" class="form-control" name="<%= (start++) %>">
+									<td align="center"><input type="text" class="form-control" name="<%= (start++) %>">
+								</tr>
+
+								<% start = 51 %>
+
+								<tr>
+									<td align="center"><strong>FRIDAY</strong>
+									<td align="center"><input type="text" class="form-control" name="<%= (start++) %>">
+									<td align="center"><input type="text" class="form-control" name="<%= (start++) %>">
+									<td align="center"><input type="text" class="form-control" name="<%= (start++) %>">
+									<td align="center"><input type="text" class="form-control" name="<%= (start++) %>">
+									<td align="center"><input type="text" class="form-control" name="<%= (start++) %>">
+									<td align="center"><input type="text" class="form-control" name="<%= (start++) %>">
+									<td align="center"><input type="text" class="form-control" name="<%= (start++) %>">
+								</tr>
+							</table>
+						</div>
+						<button type="submit" class="btn btn-success" id="mybtn"><b>SUBMIT</b></button>
+				</form>
+				</div>
+				<!--*********************-->
+				<!--!!!! Delete page !!!!-->
+				<div id="Delete" class="tabcontent">
+					<div class="container-fluid">
+						<div class="form-group">
+							<label for="id"><strong>Enter id to be deleted:</strong></label>
+							<input type="text" class="form-control col-md-12" id="deleteId" placeholder="Enter your ID" style="background: #eaeaea;" name="teacherId">
+						</div>
+						<div class="form-group">
+							<label for="department"><strong>Enter department </strong></label>
+							<input type="text" class="form-control col-md-12" id="deleteDepartment" placeholder="Enter your department" style="background: #eaeaea;" name="department">
+						</div>
+
+						<button type="submit" class="btn btn-success delete" id="mybtn" onclick="deleteCommand()"><b>CHECK</b></button>
+						<!-- <button type="submit" class="btn btn-success" id="mybtn" data-toggle="modal" data-target="#myModal" onclick="deleteCommand()"><b>DELETE</b></button> -->
+
+						<div id="form-fill">
+							<p>Id: <span id="teacherId">000</span></p>
+							<p>Name: <span id="teacherName">OOO</span></p>
+							<p>Department: <span id="department">OO</span></p>
+							<table>
+								<tr>
+									<td>sections </td>
+									<td>subjects </td>
+									<td>total lectures </td>
+								</tr>
+							</table>
+						</div>
+
+						<script>
+
+							function deleteCommand() {
+
+								var inputId = document.getElementById("deleteId").value;
+								var inputDepartment = document.getElementById("deleteDepartment").value;
+
+								console.log(inputId, inputDepartment)
+
+								if(inputId && inputDepartment) {
+									//call load details
+
+									loadDetails(inputId, inputDepartment);
+
+								} else {
+									console.log("fill details")
+									window.alert("Fill complete details");
+								}
+
+							}
+
+							function loadDetails(id, department) {
+
+								var xhttp = new XMLHttpRequest();
+
+								xhttp.onreadystatechange = function () {
+									if(this.readyState == 4 && this.status == 200) {
+										var response = JSON.parse(this.responseText);
+
+										console.log(response)
+
+										if(response.status == -1) {
+											window.alert("Something wrong happens")
+										} else if(response.status == 0) {
+											window.alert("No data available")
+										} else {
+
+											response = response.result;
+
+											var container = document.getElementById("form-fill");
+
+											container.querySelector("#teacherId").innerHTML = response.userCredentials.userID;
+											container.querySelector("#teacherName").innerHTML = response.userCredentials.Name;
+											container.querySelector("#department").innerHTML = response.userCredentials.department;
+
+											var sections = response.assignedSections;
+
+											if(!sections)sections = [];
+
+											for(let i=0; i<sections.length; i++) {
+												container.querySelector("table").insertAdjacentHTML("beforeend", `<tr><td>${sections[i].section}</td><td>${sections[i].subject}</td><td>${sections[i].total_lectures}</td></tr>`)
+											}
+
+
+											//changing button behavior
+											var button = document.querySelector(".delete");
+											button.innerHTML = "CONFIRM DELETE";
+											button.onclick = deleteUser;
+
+										}
+
+									}
+								}
+
+								xhttp.open("GET", `/admin/teacher/getDetails/${id}/${department}`, true);
+								xhttp.send();
+							}
+
+							function deleteUser(evt, inputId="deleteId", inputDepartment="deleteDepartment") {
+
+								// console.log(id, department)
+
+								var id = document.getElementById(inputId).value;
+								var department = document.getElementById(inputDepartment).value;
+
+								var xhttp = new XMLHttpRequest();
+
+								xhttp.onreadystatechange = function() {
+									if(this.readyState == 4 && this.status == 200) {
+										console.log("delete response", this.responseText);
+										var response = JSON.parse(this.responseText);
+										if(response.status == 1) {
+											var modal = document.getElementById("myModal");
+											modal.querySelector("#heading").innerHTML = "Deleted Successfully";
+											modal.querySelector("#body p").innerHTML = `Teacher Id: ${response.id}<br>Teacher Department: ${response.department}`;
+											modal.querySelector('button').onclick = function () {window.location.href = "/admin/teacher"}
+
+											if(inputId == "deleteId") {
+												console.log(id,"deleted")
+												$("#myModal").modal();
+											}
+										}
+									}
+								}
+								xhttp.open("POST", "/admin/teacher/delete", false);
+								xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded")
+								xhttp.send(`teacherId=${id}&department=${department}`);
+							}
+						</script>
+
+
+
+						<div class="modal f1de top" id="myModal">
+							<div class="modal-dialog">
+								<div class="modal-content">
+									<div class="modal-header">
+										<h4 class="modal-title" id="heading"></h4>
+									</div>
+									<div class="modal-body" id="body">
+										<p></p>
+									</div>
+									<div class="modal-footer">
+										<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!--*********************-->
+				<!--!!!! Modify page !!!!-->
+				<div id="Modify" class="tabcontent">
+					<form action="/admin/teacher/create" method="post" onsubmit="beforeSubmit()">
+
+						<div class="container-fluid">
+							<div class="form-group">
+								<label for="id"><strong>Enter your id:</strong></label>
+								<input type="text" class="form-control" id="modifyId" placeholder="Enter id" style="background: #eaeaea;" name="teacherId">
+							</div>
+							<div class="form-group">
+								<label for="department"><strong>Enter your department:</strong></label>
+								<input type="text" class="form-control" id="modifyDepartment" placeholder="Enter department" style="background: #eaeaea;" name="department">
+							</div>
+	
+							<button type="button" class="btn btn-success btn-modify" id="mybtn" onclick="modifyCommand()"><b>MODIFY</b></button>
+
+					</form>
+
+					<script>
+
+						function modifyCommand() {
+
+							var inputId = document.getElementById("modifyId").value;
+							var inputDepartment = document.getElementById("modifyDepartment").value;
+
+							console.log(inputId, inputDepartment)
+
+							if(inputId && inputDepartment) {
+								loadAllDetails(inputId, inputDepartment);
+							} else {
+								console.log("fill details")
+								window.alert("Fill complete details");
+							}
+
+						}
+
+						function loadAllDetails(id, department) {
+
+							var xhttp = new XMLHttpRequest();
+
+							xhttp.onreadystatechange = function () {
+								if(this.readyState == 4 && this.status == 200) {
+									var response = JSON.parse(this.responseText);
+
+									console.log(response)
+
+									if(response.status == -1) {
+										window.alert("Something wrong happens")
+									} else if(response.status == 0) {
+										window.alert("No data available")
+									} else {
+
+										response = response.result;
+
+
+										//append neccessary fields
+										var button = document.querySelector(".btn-modify");
+										button.insertAdjacentHTML("beforebegin", HTMLToAppend);
+
+
+										var container = document.getElementById("Modify");
+
+										//filling credential info
+										container.querySelector("#modifyId").value = response.userCredentials.userID;
+										container.querySelector("#modifyName").value = response.userCredentials.Name;
+										container.querySelector("#modifyDepartment").value = response.userCredentials.department;
+										container.querySelector("#modifyPassword").value = response.userCredentials.password;
+
+										//filling time table
+										var cells = container.querySelector('table').querySelectorAll('input');
+
+										for(let i=0, k=0; i<5; i++) {
+
+											for(let j=1; j<=7; j++, k++) {
+
+												var value = response.timeTable[i][`lec${j}`];
+
+												if(value == '-')value='';
+
+												cells[k].value = value;
+											}
+										}
+
+
+										//changing button behavior
+										button.innerHTML = "SUBMIT";
+										button.type = "submit";
+										button.onclick = "";
+
+									}
+
+								}
+							}
+
+							xhttp.open("GET", `/admin/teacher/getAllDetails/${id}/${department.toUpperCase()}`, true);
+							xhttp.send();
+						}
+
+
+						function beforeSubmit() {
+
+							//deleting previous entries
+							deleteUser("modifyId", "modifyDepartment");
+
+						}
+
+					</script>
+
+					<!-- HTML to append variable -->
+					<script>
+
+						var HTMLToAppend = `
+									<div class="form-group">
+									<label for="name"><strong>Enter your name:</strong></label>
+									<input type="text" class="form-control" id="modifyName" placeholder="Name" style="background: #eaeaea;" name="teacherName">
+								</div>
+								<div class="form-group">
+									<label for="pwd"><strong>Password:</strong></label>
+									<input type="password" class="form-control" id="modifyPassword" placeholder="Enter password" style="background: #eaeaea;" name="teacherPassword">
+								</div>
+							</div>
+							<div class="container-fluid">
+								<table class="table table-striped table-responsive table-secondary table-hover" border="2" align="center">
+									<tr>
+										<td align="center">
+										<td><strong>8:15-9:10</strong>
+										<td><strong>9:10-10:05</strong>
+										<td><strong>10:05-11:00</strong>
+										<td><strong>11:00-11:30</strong>
+										<td><strong>11:30-12:25</strong>
+										<td><strong>12:25-01:20</strong>
+										<td><strong>01:20-02:15</strong>
+										<td><strong>02:15-03:10</strong>
+									</tr>
+									<tr>
+										<td align="center"><strong>MONDAY</strong>
+										<td align="center"><input type="text" class="form-control" name="11">
+										<td align="center"><input type="text" class="form-control" name="12">
+										<td align="center"><input type="text" class="form-control" name="13">
+										<td rowspan="6"align="center">L<br>U<br>N<br>C<br>H
+										<td align="center"><input type="text" class="form-control" name="14">
+										<td align="center"><input type="text" class="form-control" name="15">
+										<td align="center"><input type="text" class="form-control" name="16">
+										<td align="center"><input type="text" class="form-control" name="17">
+									</tr>
+									<tr>
+										<td align="center"><strong>TUESDAY</strong>
+										<td align="center"><input type="text" class="form-control" name="21">
+										<td align="center"><input type="text" class="form-control" name="22">
+										<td align="center"><input type="text" class="form-control" name="23">
+										<td align="center"><input type="text" class="form-control" name="24">
+										<td align="center"><input type="text" class="form-control" name="25">
+										<td align="center"><input type="text" class="form-control" name="26">
+										<td align="center"><input type="text" class="form-control" name="27">
+									</tr>
+									<tr>
+										<td align="center"><strong>WEDNESDAY</strong>
+										<td align="center"><input type="text" class="form-control" name="31">
+										<td align="center"><input type="text" class="form-control" name="32">
+										<td align="center"><input type="text" class="form-control" name="33">
+										<td align="center"><input type="text" class="form-control" name="34">
+										<td align="center"><input type="text" class="form-control" name="35">
+										<td align="center"><input type="text" class="form-control" name="36">
+										<td align="center"><input type="text" class="form-control" name="37">
+									</tr>
+									<tr>
+										<td align="center"><strong>THURSDAY</strong>
+										<td align="center"><input type="text" class="form-control" name="41">
+										<td align="center"><input type="text" class="form-control" name="42">
+										<td align="center"><input type="text" class="form-control" name="43">
+										<td align="center"><input type="text" class="form-control" name="44">
+										<td align="center"><input type="text" class="form-control" name="45">
+										<td align="center"><input type="text" class="form-control" name="46">
+										<td align="center"><input type="text" class="form-control" name="47">
+									</tr>
+									<tr>
+										<td align="center"><strong>FRIDAY</strong>
+										<td align="center"><input type="text" class="form-control" name="51">
+										<td align="center"><input type="text" class="form-control" name="52">
+										<td align="center"><input type="text" class="form-control" name="53">
+										<td align="center"><input type="text" class="form-control" name="54">
+										<td align="center"><input type="text" class="form-control" name="55">
+										<td align="center"><input type="text" class="form-control" name="56">
+										<td align="center"><input type="text" class="form-control" name="57">
+									</tr>
+								</table>
+							</div>`
+
+					</script>
+
+				</div>
+				<!--*********************-->
+			</div>
+		</div>
+	</body>
+</html>

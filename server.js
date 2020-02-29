@@ -61,6 +61,10 @@ app.use("/student", student)
 const login = require(__dirname + "/routes/login.js")
 app.use("/users", login)
 
+const admin = require(__dirname + "/routes/admin.js")
+app.use("/admin", admin);
+
+
 //
 // app.get("/login", redirectHome, (req, res) => {
 //   // if(loggedIn) res.redirect("/");
@@ -106,8 +110,18 @@ app.get("/admin", (req, res) => {
   res.render("admin");
 })
 
+
 app.get('/practice', (req, res) => {
-  res.render("sectionDetails", {section: "s10"});
+
+	// console.log(req);
+
+	res.render("practice.ejs");
+
+})
+
+app.post("/practice", (req, res) => {
+	console.log("body:", req.body);
+	res.redirect("/practice");
 })
 
 function addUser(userID, password) {

@@ -69,7 +69,7 @@ router.post("/checkAttendance", (req, res) => {
             presentDays="No attendance taken";
             percentage="NA";
           } else {
-            presentDays = await util.getAttendance(rollNo, section, subjectList[i].subject)
+            presentDays = await util.getAttendance(temp.toLowerCase() + rollNo, section, subjectList[i].subject)
             percentage = Number.parseFloat(presentDays*100/totalLectures).toPrecision(4);
           }
 

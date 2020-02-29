@@ -1,21 +1,13 @@
 const mysql = require('mysql')
 
 
-// function dbConnection(host, user, password, database) {
-  
-//   return mysql.createConnection({
-//     host: host || process.env.DB_HOST,
-//     user: user || process.env.DB_USER,
-//     password: password || process.env.DB_PASSWORD,
-//     database: database || process.env.DATABASE
-//   })  
+var db = mysql.createConnection({
+	host: 'localhost' || process.env.DB_HOST,
+	user: 'root' || process.env.DB_USER,
+	password: 'Root@987' || process.env.DB_PASSWORD,
+	database: 'ams' || process.env.DATABASE
+});
 
-// }
-
-// var host, user, password, database = '';
-
-
-var db;  
 
 
 function queryProcessSchemaGet(query) {
@@ -23,12 +15,12 @@ function queryProcessSchemaGet(query) {
     db.query(query, (err, result) =>{
       if(err) {
         console.log(err);
-        resolve(-1)
+        resolve({status: -1, errror: err})
       }
-      // else if(result.length == 0) {
-      //   resolve(0);
-      // }
-      else resolve(result);
+      else if(result.length == 0) {
+        resolve({status: 0});
+      }
+      else resolve({status: 1, result: result});
     })
   })
 }
@@ -38,7 +30,7 @@ function queryProcessSchemaPut(query) {
     db.query(query, (err, result) =>{
       if(err) {
         console.log(err);
-        resolve(-1)
+        resolve({status: -1, error: err})
       }
       else resolve({status: 1, result: result});
     })
@@ -58,17 +50,18 @@ function ObjToString(object) {
 }
 
 
-module.exports.dbConnection = dbConnection;
+// module.exports.dbConnection = db;
 module.exports.queryProcessSchemaGet = queryProcessSchemaGet;
 module.exports.queryProcessSchemaPut = queryProcessSchemaPut;
 module.exports.ObjToString = ObjToString;
-module.exports.setDatabaseConnectionParamaters = (host_, user_, password_, database_) => {
-  db = mysql.createConnection({
-    host: host_,
-    user: user_,
-    password: password_,
-    database: database_
-  })
-}
+
+// module.exports.setDatabaseConnectionParamaters = (host_, user_, password_, database_) => {
+//   db = mysql.createConnection({
+//     host: host_,
+//     user: user_,
+//     password: password_,
+//     database: database_
+//   })
+// }
 
 

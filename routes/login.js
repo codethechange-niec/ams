@@ -9,8 +9,8 @@ const db = require(__dirname + "/../dbfunctions/teacher.js")
 const router = express.Router();
 
 const redirectLogin = (req, res, next) => {
-  if(!req.session.userId) {
-    res.redirect('/')
+  if(!req.session.userType) {
+    res.redirect("/")
   }
   else {
     next()
@@ -18,9 +18,12 @@ const redirectLogin = (req, res, next) => {
 }
 
 const redirectHome = (req, res, next) => {
-  if(req.session.userId) {
+  if(req.session.userType == "teacher") {
     res.redirect('/teacher/timeTable')
-  }
+	}
+	else if(req.session.userType == "admin") {
+		res.redirect('/admin/teacher')
+	}
   else {
     next()
   }
@@ -37,13 +40,19 @@ router.post("/", redirectHome, (req, res) => {
   util.getConnection().query(`select userID, Name, userType, department from users where userid='${userId}' and password='${password}'`, async (err, result) => {
     if(err) throw err;
     if(result.length === 0) {
+			console.log("Invalid username or password")
       res.render("home", {error_msg: "Invalid username or password"});
     }
     else {
       console.log("User " + JSON.stringify(result) + " logged in");
       req.session.userId = userId;
       req.session.userName = result[0].Name;
-      req.session.department = result[0].department;
+			req.session.department = result[0].department.toLowerCase();
+			req.session.userType = result[0].userType.toLowerCase();
+
+			if(req.session.userType == "admin") {
+				return res.redirect("/admin/teacher");
+			}
 
       var subjects = await db.getSubjects(req.session.department, req.session.userId)
 
@@ -96,7 +105,7 @@ router.post('/checkLogStatus', (req, res) => {
 
   if(req.session.userId) {
     obj.logStatus = 1;
-    obj.userType = "teacher";
+    obj.userType = req.session.userType;
     obj.userName = req.session.userName;
     obj.userId = req.session.userId;
   } else {
