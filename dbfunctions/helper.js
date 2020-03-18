@@ -3,8 +3,8 @@ const mysql = require('mysql')
 
 var db = mysql.createConnection({
 	host: process.env.DB_HOST || 'localhost',
-	user: process.env.DB_USER || 'root',
-	password: process.env.DB_PASSWORD || 'Root@987',
+	user: process.env.DB_USER || 'ams_user',
+	password: process.env.DB_PASSWORD || 'ams@123',
 	database: process.env.DATABASE || 'ams'
 });
 
@@ -63,5 +63,3 @@ module.exports.ObjToString = ObjToString;
 //     database: database_
 //   })
 // }
-
-
