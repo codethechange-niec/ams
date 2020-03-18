@@ -65,47 +65,6 @@ const admin = require(__dirname + "/routes/admin.js")
 app.use("/admin", admin);
 
 
-//
-// app.get("/login", redirectHome, (req, res) => {
-//   // if(loggedIn) res.redirect("/");
-//   res.render("login", {error_msg: ""});
-// });
-//
-// app.post("/login", redirectHome, (req, res) => {
-//   let userId = req.body.userid;
-//   let password = req.body.password;
-//   db.query(`select userID, userType, department from users where userid='${userId}' and password='${password}'`, (err, result) => {
-//     if(err) throw err;
-//     if(result.length === 0) {
-//       res.render("login", {error_msg: "Invalid username or password"});
-//     }
-//     else {
-//       console.log("User " + userId + " logged in");
-//       req.session.userId = userId;
-//       req.session.department = result[0].department;
-//       console.log(req.session.department);
-//       if(result[0].userType.toLowerCase === 'admin') {
-//         req.session.adminIN = true;
-//         res.redirect("/admin");
-//       }
-//       else {
-//         res.redirect("/teacher/timeTable");
-//         req.session.userSections = []
-//         db.query(`select * from teacher_${req.session.userId}`, (err, result) => {
-//           //console.log(result);
-//           for(let i=0; i<result.length; i++) {
-//             for(let j=1; j<8; j++) {
-//               util.addElement(req.session.userSections, result[i][`lec${j}`]);
-//             }
-//           }
-//           req.session.save();
-//           console.log(req.session.userSections);
-//         });
-//       }
-//     }
-//   });
-// });
-
 app.get("/admin", (req, res) => {
   res.render("admin");
 })
@@ -124,20 +83,16 @@ app.post("/practice", (req, res) => {
 	res.redirect("/practice");
 })
 
-function addUser(userID, password) {
-  db.query(`insert into users values('${userID}', '${password}', "Teacher")`)
-}
-
-function updateDepartment(userID, username, details) {
-  details.forEach((value) => {
-    db.query(`insert into department values('${userID}', '${username}', '${value[0]}', '${value[1]}', 0)`)
-  })
-}
-
-function createTimeTable(userID) {
-  db.query(`create table `)
-}
 
 app.listen(3000, (req, res) => {
-  console.log("server started at port 3000 \nhttp://localhost:3000");
+	console.log("server started at port 3000 \nhttp://localhost:3000");
+
+	console.log("enviroment variables:");
+
+	console.log("database name:", process.env.DATABASE);
+	console.log("database user:", process.env.DB_USER);
+	console.log("database password:", process.env.DB_PASSWORD);
+	console.log("database host:", process.env.DB_HOST);
+
+
 });
