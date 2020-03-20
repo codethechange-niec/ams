@@ -4,6 +4,7 @@
   "description": "This is an attendance management system for college.",
   "main": "server.js",
   "scripts": {
+		"start": "source ams-env; nodemon server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Mohit Singh",

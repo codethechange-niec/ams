@@ -3,10 +3,10 @@
 const mysql = require("mysql")
 
  const database = mysql.createConnection({
-  host : "localhost",
-  user : "root",
-  password : "Root@987",
-  database : "ams"
+	host: process.env.DB_HOST || 'localhost',
+	user: process.env.DB_USER || 'root',
+	password: process.env.DB_PASSWORD || 'Root@987',
+	database: process.env.DATABASE || 'ams'
 });
 
 function getdate() {
@@ -80,5 +80,5 @@ exports.getTotalLectures = function getTotalLectures(subject, section, departmen
 }
 
 
-exports.getConnection = () => {return database}
+exports.database = database;
 //console.log(getdate());
