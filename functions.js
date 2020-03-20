@@ -3,10 +3,10 @@
 const mysql = require("mysql")
 
  const database = mysql.createConnection({
-	host: process.env.DB_HOST || 'localhost',
-	user: process.env.DB_USER || 'root',
-	password: process.env.DB_PASSWORD || 'Root@987',
-	database: process.env.DATABASE || 'ams'
+	host: process.env.DB_HOST,
+	user: process.env.DB_USER,
+	password: process.env.DB_PASSWORD,
+	database: process.env.DATABASE
 });
 
 function getdate() {
