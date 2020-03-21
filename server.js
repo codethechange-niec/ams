@@ -8,10 +8,10 @@ const session = require('express-session')
 const util = require(__dirname + "/functions");
 
 const db = mysql.createConnection({
-  host : "localhost",
-  user : "ams_user",
-  password : "ams@123",
-  database : "ams"
+  host : process.env.DB_HOST,
+  user : process.env.DB_USER,
+  password : process.env.DB_PASSWORD,
+  database : process.env.DATABASE
 });
 
 const TWO_HOURS = 1000*60*60*2;
@@ -21,10 +21,6 @@ app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static("public"));
 
-db.connect((err) => {
-  if(err) throw err;
-  console.log("successfully connected to mysql");
-});
 
 const {
   PORT = 3000,
@@ -87,12 +83,30 @@ app.post("/practice", (req, res) => {
 app.listen(3000, (req, res) => {
 	console.log("server started at port 3000 \nhttp://localhost:3000");
 
-	console.log("enviroment variables:");
+	console.log("Enviroment variables:");
 
 	console.log("database name:", process.env.DATABASE);
 	console.log("database user:", process.env.DB_USER);
 	console.log("database password:", process.env.DB_PASSWORD);
 	console.log("database host:", process.env.DB_HOST);
 
+	var dbEnv = ["DATABASE", "DB_USER", "DB_PASSWORD", "DB_HOST"];
+
+	for(let i of dbEnv) {
+		console.log(process.env[i])
+		if(typeof process.env[i] === "undefined") {
+			console.log("Enviroment variable:", i, "not given");
+			return;
+		}
+	}
+
+	db.connect((err) => {
+		if(err) {
+			console.log("Connection failed, check the database connection parameters");
+			console.log("<<<<<<<<<<<<<<ERROR:",err);
+		} else {
+			console.log("Database connection successful")
+		}
+	})
 
 });
