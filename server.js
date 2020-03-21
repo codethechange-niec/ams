@@ -90,6 +90,16 @@ app.listen(3000, (req, res) => {
 	console.log("database password:", process.env.DB_PASSWORD);
 	console.log("database host:", process.env.DB_HOST);
 
+	var dbEnv = ["DATABASE", "DB_USER", "DB_PASSWORD", "DB_HOST"];
+
+	for(let i of dbEnv) {
+		console.log(process.env[i])
+		if(typeof process.env[i] === "undefined") {
+			console.log("Enviroment variable:", i, "not given");
+			return;
+		}
+	}
+
 	db.connect((err) => {
 		if(err) {
 			console.log("Connection failed, check the database connection parameters");
