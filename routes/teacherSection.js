@@ -60,9 +60,28 @@ router.get(["/", "/timeTable"], async (req, res) => {
         for(let i=0; i<result.length; i++) {
 
           lecturesCompleted.push([result[i].section, result[i].subject, result[i].total_lectures]);
-        }
+				}
 
-        res.render("timeTable", {timeTable: timeTable, lecturesCompleted: lecturesCompleted})
+
+				//creating subjects array from lecturesCompleted
+				var subjects = [];
+				for(let i=0; i<lecturesCompleted.length; i++) {
+					util.addElement(subjects, lecturesCompleted[i][1]);
+				}
+
+				console.log("teacher profile", req.session.userId, req.session.userName)
+
+				res.render("timeTable", {
+					timeTable: timeTable,
+					lecturesCompleted: lecturesCompleted,
+					teacherProfile: {
+						id: req.session.userId,
+						name: req.session.userName,
+						department: req.session.department,
+						type: req.session.userType,
+						subjects: subjects
+					}
+				})
 
       }
     })
