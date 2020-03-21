@@ -7,7 +7,7 @@
   1. `mysql -u root -p` (Enter root password when prompted)
   2. `CREATE DATABASE ams;`, Do not exit mysql now if wants to create new user.
 	3. Create new mysql user by following these steps:
-		1. For creating new user: `CREATE USER 'ams_user'@'localhost' IDENTIFIED BY 'ams@123';`
+	  1. For creating new user: `CREATE USER 'ams_user'@'localhost' IDENTIFIED BY 'ams@123';`
 		2. Grant all privileges to the new user: `GRANT ALL PRIVILEGES ON * . * TO 'ams_user'@'localhost';`
   4. Exit from mysql: `exit`
   5. Import database file(make sure ams.sql must be in same directory): `mysql -u ams_user -p ams < ams.sql`
