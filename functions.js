@@ -80,5 +80,5 @@ exports.getTotalLectures = function getTotalLectures(subject, section, departmen
 }
 
 
-exports.database = database;
+exports.getConnection = () => database;
 //console.log(getdate());
