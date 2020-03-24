@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Home</title>
+    <link rel="shortcut icon" href=http://adgitmdelhi.ac.in/wp-content/uploads/2018/07/logo-adgitm-small2.jpg>
     <link
       rel="stylesheet"
       href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
@@ -20,6 +21,13 @@
       rel="stylesheet"
     />
     <!-- <link href="main.css" rel="stylesheet" /> -->
+    <style>
+      .card{
+          -webkit-box-shadow: 0 10px 6px -6px #777;
+          -moz-box-shadow: 0 10px 6px -6px #777;
+          box-shadow: 0 10px 6px -6px #777;
+          }
+    </style>
   </head>
 
   <body>
@@ -118,20 +126,20 @@
         />
         <div class="media-body col-lg-10" style="margin:30px 30px">
           <h4 class="mt-0 col-sm-12" style="font-family: 'Cabin', sans-serif;">
-            DR. AKHILESH DAS GUPT INSTITUTE OF TECHNOLOGY AND MANAGEMENT
+            <strong>DR. AKHILESH DAS GUPT INSTITUTE OF TECHNOLOGY AND MANAGEMENT</strong>
           </h4>
           <h4 class="col-sm-12" style="font-family: 'Arvo', serif;">
-            Attendance Management System
+            <strong>Attendance Management System</strong>
           </h4>
           <hr />
         </div>
       </div>
       <div class="card-deck" style="margin-top:100px">
         <div
-          class="card text-white bg-primary mb-3"
-          style="max-width: 18rem;margin: 0 auto;"
+          class="card text-white mb-3"
+          style="max-width: 18rem;margin: 0 auto; background-color: #33b5e5;"
         >
-          <div class="card-header">
+          <div class="card-header" style="background-color: #0099CC;">
             <h3 style="text-align: center">
               <img
                 src="https://img.icons8.com/officel/40/000000/student-female.png"
@@ -141,7 +149,7 @@
           <div class="card-body">
             <form action="/users" method="post">
               <div class="form-group">
-                <label for="exampleInputEmail1">User Id</label>
+                <label for="exampleInputEmail1"><b>User Id</b></label>
                 <input
                   type="text"
                   class="form-control"
@@ -152,7 +160,7 @@
                 />
               </div>
               <div class="form-group">
-                <label for="exampleInputPassword1">Password</label>
+                <label for="exampleInputPassword1"><b>Password</b></label>
                 <input
                   type="password"
                   class="form-control"
@@ -162,16 +170,16 @@
                 />
               </div>
 
-              <button type="submit" class="btn btn-danger">Login</button>
+              <button type="submit" class="btn btn-secondary">Login</button>
             </form>
           </div>
         </div>
         <div style="border-right:4px solid rgba(54, 49, 49, 0.5)"></div>
         <div
-          class="card text-white bg-success mb-3"
-          style="max-width: 18rem;margin: 0 auto"
+          class="card text-white mb-3"
+          style="max-width: 18rem;margin: 0 auto;background-color: #00C851;"
         >
-          <div class="card-header">
+          <div class="card-header" style="background-color: #007E33;">
             <h3 style="text-align:center">
               <img
                 src="https://img.icons8.com/bubbles/50/000000/student-male.png"
@@ -181,7 +189,7 @@
           <div class="card-body">
             <form action="/student/checkAttendance" method="post">
               <div class="form-group">
-                <label for="exampleInputEmail1">Roll No.</label>
+                <label for="exampleInputEmail1"><b>Roll No.</b></label>
                 <input
                   type="number"
                   class="form-control"
@@ -190,7 +198,7 @@
                   placeholder="Enter Roll No."
                   name="rollNo"
                 />
-                <label for="exampleInputEmail1">Section</label>
+                <label for="exampleInputEmail1"><b>Section</b></label>
                 <input
                   type="text"
                   class="form-control"
@@ -201,7 +209,7 @@
                 />
               </div>
               <div class="form-group">
-                <label for="exampleInputPassword1">Department</label>
+                <label for="exampleInputPassword1"><b>Department</b></label>
                 <input
                   type="text"
                   class="form-control"
@@ -211,7 +219,7 @@
                 />
               </div>
 
-              <button type="submit" class="btn btn-danger">
+              <button type="submit" class="btn btn-success">
                 Check Attendance
               </button>
             </form>
