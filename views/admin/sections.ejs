@@ -184,7 +184,8 @@
 								</div>
 								<div class="form-group">
 									<label for="department"><strong>Enter your department:</strong></label>
-									<input type="text" class="form-control" id="department" placeholder="Enter department" style="background: #fff;" name="section_department">
+									<!-- <input type="text" class="form-control" id="department" placeholder="Enter department" style="background: #fff;" name="section_department"> -->
+									<%- include("../partials/dropdowns/department.ejs") -%>
 								</div>
 							</div>
 
@@ -308,7 +309,9 @@
 							</div>
 							<div class="form-group">
 								<label for="department"><strong>Enter your department:</strong></label>
-								<input type="text" class="form-control" id="department" placeholder="Enter department" style="background: #fff;" name="department">
+								<!-- <input type="text" class="form-control" id="department" placeholder="Enter department" style="background: #fff;" name="department"> -->
+								<%- include("../partials/dropdowns/department.ejs") -%>
+
 							</div>
 							<button type="button" class="btn btn-success" id="mybtn" onclick="handleDelete()"><b>CHECK</b></button>
 
@@ -403,7 +406,9 @@
 								</div>
 								<div class="form-group">
 									<label for="department"><strong>Enter your department:</strong></label>
-									<input type="text" class="form-control" id="department" placeholder="Enter department" style="background: #fff;" name="section_department">
+									<!-- <input type="text" class="form-control" id="department" placeholder="Enter department" style="background: #fff;" name="section_department"> -->
+									<%- include("../partials/dropdowns/department.ejs") -%>
+
 								</div>
 							</div>
 
@@ -517,5 +522,9 @@
 				<!--*********************-->
 			</div>
 		</div>
+
+		<script src="/js/AJAX.js"></script>
+		<script src="/js/renderDepartments.js"></script>
+
 	</body>
 </html>
