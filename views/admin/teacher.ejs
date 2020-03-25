@@ -183,7 +183,9 @@
 							</div>
 							<div class="form-group">
 								<label for="department"><strong>Enter your department:</strong></label>
-								<input type="text" class="form-control" id="department" placeholder="Enter department" style="background: #eaeaea;" name="department" value="it">
+								<!-- <input type="text" class="form-control" id="department" placeholder="Enter department" style="background: #eaeaea;" name="department" value="it"> -->
+								<%- include("../partials/dropdowns/department.ejs") -%>
+
 							</div>
 							<div class="form-group">
 								<label for="pwd"><strong>Password:</strong></label>
@@ -285,7 +287,9 @@
 						</div>
 						<div class="form-group">
 							<label for="department"><strong>Enter department </strong></label>
-							<input type="text" class="form-control col-md-12" id="deleteDepartment" placeholder="Enter your department" style="background: #eaeaea;" name="department">
+							<!-- <input type="text" class="form-control col-md-12" id="deleteDepartment" placeholder="Enter your department" style="background: #eaeaea;" name="department"> -->
+							<%- include("../partials/dropdowns/department.ejs") -%>
+
 						</div>
 
 						<button type="submit" class="btn btn-success delete" id="mybtn" onclick="deleteCommand()"><b>CHECK</b></button>
@@ -435,7 +439,9 @@
 							</div>
 							<div class="form-group">
 								<label for="department"><strong>Enter your department:</strong></label>
-								<input type="text" class="form-control" id="modifyDepartment" placeholder="Enter department" style="background: #eaeaea;" name="department">
+								<!-- <input type="text" class="form-control" id="modifyDepartment" placeholder="Enter department" style="background: #eaeaea;" name="department"> -->
+								<%- include("../partials/dropdowns/department.ejs") -%>
+
 							</div>
 	
 							<button type="button" class="btn btn-success btn-modify" id="mybtn" onclick="modifyCommand()"><b>MODIFY</b></button>
@@ -618,5 +624,9 @@
 				<!--*********************-->
 			</div>
 		</div>
+
+
+		<script src="/js/AJAX.js"></script>
+		<script src="/js/renderDepartments.js"></script>
 	</body>
 </html>
