@@ -312,8 +312,10 @@
 
 							function deleteCommand() {
 
-								var inputId = document.getElementById("deleteId").value;
-								var inputDepartment = document.getElementById("deleteDepartment").value;
+								let container = document.getElementById("Delete")
+
+								var inputId = container.querySelector("#deleteId").value;
+								var inputDepartment = container.querySelector("#department").value;
 
 								console.log(inputId, inputDepartment)
 
@@ -376,12 +378,12 @@
 								xhttp.send();
 							}
 
-							function deleteUser(evt, inputId="deleteId", inputDepartment="deleteDepartment") {
+							function deleteUser(evt, inputId="deleteId", inputDepartment="#Delete #department") {
 
 								// console.log(id, department)
 
 								var id = document.getElementById(inputId).value;
-								var department = document.getElementById(inputDepartment).value;
+								var department = document.querySelector(inputDepartment).value;
 
 								var xhttp = new XMLHttpRequest();
 
@@ -443,7 +445,7 @@
 								<%- include("../partials/dropdowns/department.ejs") -%>
 
 							</div>
-	
+
 							<button type="button" class="btn btn-success btn-modify" id="mybtn" onclick="modifyCommand()"><b>MODIFY</b></button>
 
 					</form>
@@ -452,8 +454,10 @@
 
 						function modifyCommand() {
 
-							var inputId = document.getElementById("modifyId").value;
-							var inputDepartment = document.getElementById("modifyDepartment").value;
+							let container = document.getElementById("Modify")
+
+							var inputId = container.querySelector("#modifyId").value;
+							var inputDepartment = container.querySelector("#department").value;
 
 							console.log(inputId, inputDepartment)
 
@@ -495,7 +499,7 @@
 										//filling credential info
 										container.querySelector("#modifyId").value = response.userCredentials.userID;
 										container.querySelector("#modifyName").value = response.userCredentials.Name;
-										container.querySelector("#modifyDepartment").value = response.userCredentials.department;
+										container.querySelector("#department").value = response.userCredentials.department;
 										container.querySelector("#modifyPassword").value = response.userCredentials.password;
 
 										//filling time table
@@ -532,7 +536,7 @@
 						function beforeSubmit() {
 
 							//deleting previous entries
-							deleteUser("modifyId", "modifyDepartment");
+							deleteUser("modifyId", "#Modify #department");
 
 						}
 
