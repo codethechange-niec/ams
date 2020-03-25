@@ -66,6 +66,15 @@ app.get("/admin", (req, res) => {
 })
 
 
+//departments list
+app.post("/departments", (req, res) => {
+	if(app.locals.departments) {
+		res.json({list: app.locals.departments});
+	} else {
+		res.json({err: "departments array not found"})
+	}
+})
+
 app.get('/practice', (req, res) => {
 
 	// console.log(req);
@@ -108,5 +117,9 @@ app.listen(3000, (req, res) => {
 			console.log("Database connection successful")
 		}
 	})
+
+
+	//setting departments in list
+	app.locals.departments = ["IT"];
 
 });
