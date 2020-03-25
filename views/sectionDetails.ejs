@@ -9,15 +9,15 @@
     <title><%= section %></title>
 </head>
 <body>
-
-      <table class="table table-bordered table-sm">
-
+<div class="container">
+  
+      <table class="table table-bordered table-striped table-sm mx-auto">
 
         <thead class="thead-dark">
 
           <tr>
             <% for(let i=0; i<arr[0].length; i++) { %>
-              <th scope="col"><%= arr[0][i] %></th>
+              <th class="text-center" scope="col"><%= arr[0][i] %></th>
             <% } %>
           </tr>
 
@@ -27,7 +27,7 @@
         <tbody>
           <% for(let i=1; i<arr.length; i++) { %>
 
-            <tr>
+            <tr class="text-center">
               <th scope="row"><%= arr[i][0] %></th>
               <% for(let j=1; j<arr[i].length; j++) { %>
                 <td><%= arr[i][j] %></td>
@@ -38,6 +38,6 @@
 
         </tbody>
       </table>
-
+</div>
 </body>
 </html>
