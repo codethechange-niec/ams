@@ -15,7 +15,7 @@ function queryProcessSchemaGet(query) {
     db.query(query, (err, result) =>{
       if(err) {
         console.log(err);
-        resolve({status: -1, errror: err})
+        resolve({status: -1, error: err})
       }
       else if(result.length == 0) {
         resolve({status: 0});

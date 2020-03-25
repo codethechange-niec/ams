@@ -317,7 +317,10 @@ router.get("/section/getDetails/:name/:department", async (req, res) => {
 
 	if(result.status == -1) {
 		//TODO: if have an error message then send along it
-		return res.send(`{"staus": -1, "msg": ""}`);
+		return res.json({
+			status: -1,
+			msg: result.error.errno==1146?"Section Not Found":""
+		});
 	} else {
 
 		let details = {};
