@@ -6,13 +6,7 @@ const mysql = require("mysql");
 const ejs = require("ejs");
 const session = require('express-session')
 const util = require(__dirname + "/functions");
-
-const db = mysql.createConnection({
-  host : process.env.DB_HOST,
-  user : process.env.DB_USER,
-  password : process.env.DB_PASSWORD,
-  database : process.env.DATABASE
-});
+const dotenv = require("dotenv");
 
 const TWO_HOURS = 1000*60*60*2;
 
@@ -22,8 +16,23 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static("public"));
 
 
+// loading enviroment variables
+let envResult = dotenv.config();
+console.log("Dotenv msg:", envResult)
+
+
+// database connection
+const db = mysql.createConnection({
+	host : process.env.DB_HOST,
+	user : process.env.DB_USER,
+	password : process.env.DB_PASSWORD,
+	database : process.env.DATABASE
+});
+
+
+//session
 const {
-  PORT = 3000,
+	PORT = 3000,
   SESS_LIFETIME = TWO_HOURS,
   NODE_ENV = 'development',
   SESS_NAME = 'sid',
@@ -33,19 +42,21 @@ const {
 const IN_PROD = NODE_ENV === 'production'
 
 app.use(session({
-  name: SESS_NAME,
+	name: SESS_NAME,
   resave: false,
   saveUninitialized: false,
   secret: SESS_SECRET,
   cookie: {
-    maxAge: SESS_LIFETIME,
+		maxAge: SESS_LIFETIME,
     sameSite: true,
     secure: IN_PROD
   }
 }))
 
+
+
 app.get("/", (req, res) => {
-  res.render("home");
+	res.render("home");
 });
 
 const teacher = require(__dirname + "/routes/teacherSection.js")
