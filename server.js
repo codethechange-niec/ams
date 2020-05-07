@@ -6,7 +6,8 @@ const mysql = require("mysql");
 const ejs = require("ejs");
 const session = require('express-session')
 const util = require(__dirname + "/functions");
-const dotenv = require("dotenv");
+const defaults = require("./functions").defaults
+
 
 const TWO_HOURS = 1000*60*60*2;
 
@@ -16,17 +17,12 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static("public"));
 
 
-// loading enviroment variables
-let envResult = dotenv.config();
-console.log("Dotenv msg:", envResult)
-
-
 // database connection
 const db = mysql.createConnection({
-	host : process.env.DB_HOST,
-	user : process.env.DB_USER,
-	password : process.env.DB_PASSWORD,
-	database : process.env.DATABASE
+	host : defaults.DB_HOST,
+	user : defaults.DB_USER,
+	password : defaults.DB_PASSWORD,
+	database : defaults.DATABASE
 });
 
 
@@ -105,16 +101,16 @@ app.listen(3000, (req, res) => {
 
 	console.log("Enviroment variables:");
 
-	console.log("database name:", process.env.DATABASE);
-	console.log("database user:", process.env.DB_USER);
-	console.log("database password:", process.env.DB_PASSWORD);
-	console.log("database host:", process.env.DB_HOST);
+	console.log("database name:", defaults.DATABASE);
+	console.log("database user:", defaults.DB_USER);
+	console.log("database password:", defaults.DB_PASSWORD);
+	console.log("database host:", defaults.DB_HOST);
 
 	var dbEnv = ["DATABASE", "DB_USER", "DB_PASSWORD", "DB_HOST"];
 
 	for(let i of dbEnv) {
-		console.log(process.env[i])
-		if(typeof process.env[i] === "undefined") {
+		console.log(defaults[i])
+		if(typeof defaults[i] === "undefined") {
 			console.log("Enviroment variable:", i, "not given");
 			return;
 		}

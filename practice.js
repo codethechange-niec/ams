@@ -10,3 +10,11 @@ console.log(id.substring(id.indexOf("_")+1, id.length));
 // for(let val of arr) {
 // 	console.log(val)
 // }
+
+var db = require('./functions')
+
+db.getConnection().connect((err) => {
+	if(err) {
+		console.log(err)
+	}
+})

@@ -18,14 +18,20 @@ router.post("/checkAttendance", (req, res) => {
   let attendanceList = [];
 
   util.getConnection().query(`select studentName, studentRollNo from section_${section} where studentRollNo like '%${rollNo}'`, async (err, result) => {
-    if(result.length == 0) {
+		if(err) {
+			console.log(err);
+
+			if(err.errno == 1146) {
+				res.send(`
+				<h1> Invalid section </h1>
+				`)
+			}
+
+    }
+    else if(result.length == 0) {
       console.log("Invalid Stundent Roll Number");
       res.render("home", {error_msg: "Stundent Roll Number not listed in given department and section"})
       return;
-    }
-    else if(err) {
-      console.log(err);
-      res.send("Error:", err.code)
     }
     else {
 

@@ -1,13 +1,17 @@
 //jshint esversion:6
-
+const dotenv = require("dotenv")
 const mysql = require("mysql")
 
- const database = mysql.createConnection({
+dotenv.config()
+
+
+const database = mysql.createConnection({
 	host: process.env.DB_HOST,
 	user: process.env.DB_USER,
 	password: process.env.DB_PASSWORD,
 	database: process.env.DATABASE
 });
+
 
 function getdate() {
   const today = new Date();
@@ -80,5 +84,17 @@ exports.getTotalLectures = function getTotalLectures(subject, section, departmen
 }
 
 
-exports.getConnection = () => database;
+exports.getConnection = () => {
+
+	// console.log(process.env.DATABASE, process.env.DB_HOST, process.env.DB_USER, process.env.DB_PASSWORD);
+	return database
+
+};
 //console.log(getdate());
+
+exports.defaults = {
+	DATABASE: process.env.DATABASE,
+	DB_HOST: process.env.DB_HOST,
+	DB_USER: process.env.DB_USER,
+	DB_PASSWORD: process.env.DB_PASSWORD
+}
