@@ -1,11 +1,11 @@
 const mysql = require('mysql')
-
+const defaults = require("../functions").defaults
 
 var db = mysql.createConnection({
-	host: process.env.DB_HOST,
-	user: process.env.DB_USER,
-	password: process.env.DB_PASSWORD,
-	database: process.env.DATABASE
+	host: defaults.DB_HOST,
+	user: defaults.DB_USER,
+	password: defaults.DB_PASSWORD,
+	database: defaults.DATABASE
 });
 
 

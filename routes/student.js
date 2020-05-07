@@ -19,8 +19,14 @@ router.post("/checkAttendance", (req, res) => {
 
   util.getConnection().query(`select studentName, studentRollNo from section_${section} where studentRollNo like '%${rollNo}'`, async (err, result) => {
 		if(err) {
-      console.log(err);
-      res.send("Error:", err.code)
+			console.log(err);
+
+			if(err.errno == 1146) {
+				res.send(`
+				<h1> Invalid section </h1>
+				`)
+			}
+
     }
     else if(result.length == 0) {
       console.log("Invalid Stundent Roll Number");
