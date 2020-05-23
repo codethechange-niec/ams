@@ -2,10 +2,10 @@ function load(method, url, responseCallback) {
 	var xhttp = new XMLHttpRequest();
 	xhttp.onreadystatechange = function () {
 		if(this.readyState == 4 && this.status == 200) {
-			console.log("Response text:", this.responseText);
+			// console.log("Response text:", this.responseText);
 			let res = JSON.parse(this.responseText);
 			if(res.err) {
-				console.log("Something error happens");
+				console.log("Some error happens");
 			} else {
 				responseCallback(res);
 			}
@@ -19,8 +19,13 @@ function loadWithParams(method, url, params, responseCallback) {
 	var xhttp = new XMLHttpRequest();
 	xhttp.onreadystatechange = function () {
 		if(this.readyState == 4 && this.status == 200) {
-			console.log("Response text:", this.responseText);
-			responseCallback(this.responseText);
+			// console.log("Response text:", this.responseText);
+			let res = JSON.parse(this.responseText)
+			if(res.err) {
+				console.log("Some error happens");
+			} else {
+				responseCallback(res);
+			}
 		}
 	}
 	xhttp.open(method, url, true);
@@ -29,5 +34,6 @@ function loadWithParams(method, url, params, responseCallback) {
 	for(let key in params) {
 		paramsString += `${key}=${params[key]}&`;
 	}
+	// console.log(paramsString.substr(0, paramsString.length-1))
 	xhttp.send(paramsString.substr(0, paramsString.length-1));
 }

@@ -73,14 +73,106 @@ app.get("/admin", (req, res) => {
 })
 
 
-//departments list
+// routes for dropdown lists
+
+// departments list
 app.post("/departments", (req, res) => {
 	if(app.locals.departments) {
-		res.json({list: app.locals.departments});
+		res.status(200).json({list: app.locals.departments});
 	} else {
-		res.json({err: "departments array not found"})
+		res.status(404).json({err: "departments array not found"})
 	}
 })
+
+// sections list
+app.post("/sections", (req, res) => {
+
+	let {department} = req.body;
+
+	if(!department) {
+		return res.status(400).json({
+			err: "department not given"
+		})
+	}
+
+	db.query(`select distinct(SUBSTRING_INDEX(section, " ", 1)) as section from department_${department.toLowerCase()}`, (err, result) => {
+
+		if(err) {
+			console.log(err)
+			if(err.errno == 1146) {
+				res.status(406).json({
+					err: "deparment doesn't exists"
+				})
+			}
+			else {
+				res.status(500).json({
+					err: "Internal Server Error"
+				})
+			}
+		}
+		else {
+
+			let temp = [];
+			for(let elem of result) {
+				temp.push(elem.section)
+			}
+
+			// console.log(temp)
+
+			res.status(200).json({
+				list: temp
+			})
+		}
+
+	})
+
+})
+
+// students list
+app.post("/students", (req, res) => {
+
+	let {section} = req.body;
+
+	if(!section) {
+		return res.status(400).json({
+			err: "section not given"
+		})
+	}
+
+	db.query(`select studentRollNo from section_${section.toLowerCase()}`, (err, result) => {
+
+		if(err) {
+			console.log(err)
+			if(err.errno == 1146) {
+				res.status(406).json({
+					err: "section doesn't exists"
+				})
+			}
+			else {
+				res.status(500).json({
+					err: "Internal Server Error"
+				})
+			}
+		}
+		else {
+
+			let temp = [];
+			for(let elem of result) {
+				temp.push(elem.studentRollNo.slice(1))
+			}
+
+			// console.log(temp)
+
+			res.status(200).json({
+				list: temp
+			})
+		}
+
+	})
+
+})
+
+
 
 app.get('/practice', (req, res) => {
 
@@ -94,6 +186,9 @@ app.post("/practice", (req, res) => {
 	console.log("body:", req.body);
 	res.redirect("/practice");
 })
+
+
+
 
 
 app.listen(3000, (req, res) => {
@@ -127,6 +222,6 @@ app.listen(3000, (req, res) => {
 
 
 	//setting departments in list
-	app.locals.departments = ["IT"];
+	app.locals.departments = ["IT", "CSE"];
 
 });

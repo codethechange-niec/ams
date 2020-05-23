@@ -13,9 +13,11 @@ router.get("/checkAttendance", (req, res) => {
 
 router.post("/checkAttendance", (req, res) => {
   let rollNo = req.body.rollNo;
-  let section = req.body.section;
+  let section = req.body.section.toLowerCase();
   let department = req.body.department.toLowerCase();
-  let attendanceList = [];
+	let attendanceList = [];
+
+	console.log(rollNo, section, department)
 
   util.getConnection().query(`select studentName, studentRollNo from section_${section} where studentRollNo like '%${rollNo}'`, async (err, result) => {
 		if(err) {

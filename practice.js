@@ -11,10 +11,4 @@ console.log(id.substring(id.indexOf("_")+1, id.length));
 // 	console.log(val)
 // }
 
-var db = require('./functions')
-
-db.getConnection().connect((err) => {
-	if(err) {
-		console.log(err)
-	}
-})
+var db = require('./functions');
