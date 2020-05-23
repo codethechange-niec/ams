@@ -7,6 +7,7 @@ function renderDepartments(response) {
 			dropdown.insertAdjacentHTML("beforeend", `<option value="${department}">${department}</option>`)
 		}
 	}
+
 }
 
 load("POST", "/departments", renderDepartments);

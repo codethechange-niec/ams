@@ -188,36 +188,39 @@
           </div>
           <div class="card-body">
             <form action="/student/checkAttendance" method="post">
-              <div class="form-group">
+							<!-- <div class="form-group">
+							</div> -->
+              <div class="form-group" id="dropdown-container">
+								<label for="exampleInputPassword1"><b>Department</b></label>
+								<%- include("partials/dropdowns/department.ejs") -%>
+								<!-- <input
+									type="text"
+									class="form-control"
+									id="exampleInputPassword1"
+									placeholder="Department Name"
+									name="department"
+								/> -->
+								<label for="exampleInputEmail1"><b>Section</b></label>
+								<%- include("partials/dropdowns/section.ejs") -%>
+								<!-- <input
+									type="text"
+									class="form-control"
+									id="exampleInputEmail1"
+									aria-describedby="emailHelp"
+									placeholder="Enter Section"
+									name="section"
+								/> -->
                 <label for="exampleInputEmail1"><b>Roll No.</b></label>
-                <input
+								<%- include("partials/dropdowns/student.ejs") -%>
+								<!-- <input
                   type="number"
                   class="form-control"
                   id="exampleInputEmail1"
                   aria-describedby="emailHelp"
                   placeholder="Enter Roll No."
                   name="rollNo"
-                />
-                <label for="exampleInputEmail1"><b>Section</b></label>
-                <input
-                  type="text"
-                  class="form-control"
-                  id="exampleInputEmail1"
-                  aria-describedby="emailHelp"
-                  placeholder="Enter Section"
-                  name="section"
-                />
-              </div>
-              <div class="form-group">
-                <label for="exampleInputPassword1"><b>Department</b></label>
-                <input
-                  type="text"
-                  class="form-control"
-                  id="exampleInputPassword1"
-                  placeholder="Department Name"
-                  name="department"
-                />
-              </div>
+                /> -->
+							</div>
 
               <button type="submit" class="btn btn-success">
                 Check Attendance
@@ -227,7 +230,16 @@
         </div>
       </div>
     </div>
-  </body>
+	</body>
+
+		<script src="/js/AJAX.js"></script>
+		<!-- <script src="/js/renderDepartments.js"></script> -->
+		<script src="/js/studentDropdowns.js"></script>
+		<!-- <script src="/js/renderStudents.js"></script> -->
+		<script>
+			let department, section, dropdownContainer=document.getElementById("dropdown-container");
+		</script>
+
   <script
     src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
     integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
