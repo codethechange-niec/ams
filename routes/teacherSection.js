@@ -8,6 +8,8 @@ const dateFns = require('date-fns')
 
 const router = express.Router();
 
+
+// middlewares
 const redirectLogin = (req, res, next) => {
   if(req.session.userType != "teacher") {
     if(req.session.userType == "admin") {
@@ -33,25 +35,97 @@ const sectionAccessibility = (req, res, next) => {
   }
 }
 
+// checks: holiday, future day, between mon-fri
+const checkValidDay = (req, res, next) => {
+
+	let day = req.params.day;
+
+	// get date of current week day
+	let weekDays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
+
+	// day is between monday and friday
+	if(weekDays.indexOf(day) < 0 || weekDays.indexOf(day) > 4) {
+		req.app.locals.msg = {
+			heading: "Attendance Aborted",
+			body: `Invalid entry(day is not valid): ${day}`
+		}
+		return res.redirect("/teacher/timeTable")
+	}
+
+	let daysToAdd = weekDays.indexOf(day)-weekDays.indexOf(dateFns.format(new Date(), "EEEE"));	//can be both +(day is after today) or -(day is before today)
+
+	let date = dateFns.addDays(new Date(), daysToAdd);
+
+	// day is on or before today
+	if(daysToAdd>0) {
+		req.app.locals.msg = {
+			heading: "Attendance Aborted",
+			body: `Invalid entry(Future date): ${dateFns.format(date, "EEEE, do MMM")}`
+		}
+		return res.redirect("/teacher/timeTable")
+	}
+
+	res.locals.attendanceDate = date;
+	req.session.attendanceDate = date;
+
+	// console.log(dateFns.format(date, "yyyy-MM-dd"))
+
+	// day is a holiday
+	util.getConnection().query(`select * from holidays where date="${dateFns.format(date, "yyyy-MM-dd")}"`, (err, result) => {
+
+		if(err) {
+			// console.log(err)
+			req.app.locals.msg = {
+				heading: "Attendance Aborted",
+				body: `Something error happens, please try again`
+			}
+			res.redirect("/teacher/timeTable");
+		}
+		else if(result.length == 0){
+			// console.log("No holiday")
+			next()
+		}
+		else {
+			req.app.locals.msg = {
+				heading: "Attendance Aborted",
+				body: `Holiday: ${result[0].name}, Date: ${dateFns.format(new Date(result[0].date), "EEEE, do MMM")}`
+			}
+			res.redirect("/teacher/timeTable");
+		}
+		// console.log(req.app.locals.msg)
+
+	})
+
+
+}
+
+
 router.use(redirectLogin)
 
 router.get(["/", "/timeTable"], async (req, res) => {
 
+	console.log("msg:", req.app.locals.msg);
+	if(typeof req.app.locals.msg == "undefined")req.app.locals.msg="";
+
+
+	console.log("Res locals", res.locals.attendanceDate);
+
+
   let timeTable;
   await new Promise((resolve, reject) => {
     util.getConnection().query(`select * from teacher_${req.session.userId}`, (err, result) => {
-      timeTable = result;
+			timeTable = result;
       resolve(1);
     });
   });
 
-
+	
   let lecturesCompleted = [];
   await new Promise(async (resolve, reject) => {
 
     util.getConnection().query(`select section, subject, total_lectures from department_it where teacher_id='${req.session.userId}' order by section asc`, (err, result) => {
       if(err) {
-        console.log(err);
+				console.log(err);
         res.send("Something went wrong");
       } else if(result.length ==0) {
         res.send("No records available")
@@ -71,6 +145,7 @@ router.get(["/", "/timeTable"], async (req, res) => {
 
 				console.log("teacher profile", req.session.userId, req.session.userName)
 
+				// console.log("Last msg:", req.app.locals.msg);
 				res.render("timeTable", {
 					timeTable: timeTable,
 					lecturesCompleted: lecturesCompleted,
@@ -91,7 +166,7 @@ router.get(["/", "/timeTable"], async (req, res) => {
 });
 
 
-router.get("/attendance/:lecture/:cell", async (req, res) => {
+router.get("/attendance/:day/:lecture/:cell", checkValidDay, async (req, res) => {
 
 
   //TODO: split last url param to store section, subject, group if cell contains lab
@@ -194,13 +269,16 @@ router.post("/attendance", async (req, res) => {
   }
 
 
-  let sql = `insert into section_${req.session.selectedSection}_attendance (lecture, grp, lecture_date, lecture_no, userID, ${rollNumbers.substring(0, rollNumbers.length-2)}) values('${req.session.userSubject}', '${req.session.userClassGrp===''?'Both':req.session.userClassGrp}', '${dateFns.format(new Date(), 'yyyy:MM:dd')}', '${Number(req.session.lecture[3])}', '${req.session.userId}', ${attendanceList.substring(0, attendanceList.length-2)})`;
+  let sql = `insert into section_${req.session.selectedSection}_attendance (lecture, grp, lecture_date, lecture_no, userID, ${rollNumbers.substring(0, rollNumbers.length-2)}) values('${req.session.userSubject}', '${req.session.userClassGrp===''?'Both':req.session.userClassGrp}', '${dateFns.format(req.session.attendanceDate, 'yyyy:MM:dd')}', '${Number(req.session.lecture[3])}', '${req.session.userId}', ${attendanceList.substring(0, attendanceList.length-2)})`;
 
   util.getConnection().query(sql, (err, result) => {
     if(err) {
       console.log(err);
       res.send(`Error, ${err.code}`)
     } else {
+
+			// unsetting attendance date
+			req.session.attendanceDate = null;
 
       res.send(`Attendance done, you can return to <a href='/teacher/timeTable'>Home</a>`);                         //needs to be change
 
@@ -323,6 +401,18 @@ router.get("/:section/:subject", sectionAccessibility, async (req, res) => {
       arr: arr
     })
   }
+
+})
+
+
+router.put("/msg/:value", (req, res) => {
+
+	if(req.params.value == 0)
+		req.app.locals.msg = "";
+	// console.log("msg after unallocation", req.app.locals.msg);
+	res.status(200).json({
+		msg: "changed"
+	})
 
 })
 

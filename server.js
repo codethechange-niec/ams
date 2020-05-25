@@ -98,7 +98,7 @@ app.post("/sections", (req, res) => {
 	db.query(`select distinct(SUBSTRING_INDEX(section, " ", 1)) as section from department_${department.toLowerCase()}`, (err, result) => {
 
 		if(err) {
-			console.log(err)
+			// console.log(err)
 			if(err.errno == 1146) {
 				res.status(406).json({
 					err: "deparment doesn't exists"
@@ -142,7 +142,7 @@ app.post("/students", (req, res) => {
 	db.query(`select studentRollNo from section_${section.toLowerCase()}`, (err, result) => {
 
 		if(err) {
-			console.log(err)
+			// console.log(err)
 			if(err.errno == 1146) {
 				res.status(406).json({
 					err: "section doesn't exists"
@@ -222,6 +222,6 @@ app.listen(3000, (req, res) => {
 
 
 	//setting departments in list
-	app.locals.departments = ["IT", "CSE"];
+	app.locals.departments = [" ", "IT", "CSE"];
 
 });

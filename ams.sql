@@ -41,6 +41,32 @@ INSERT INTO `department_it` VALUES ('1','S10','DS',2),('1','F10','WC',0),('1','S
 UNLOCK TABLES;
 
 --
+-- Table structure for table `holidays`
+--
+
+DROP TABLE IF EXISTS `holidays`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `holidays` (
+  `sno` int(11) NOT NULL AUTO_INCREMENT,
+  `date` date DEFAULT NULL,
+  `name` varchar(40) DEFAULT NULL,
+  `type` varchar(20) DEFAULT NULL,
+  PRIMARY KEY (`sno`)
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `holidays`
+--
+
+LOCK TABLES `holidays` WRITE;
+/*!40000 ALTER TABLE `holidays` DISABLE KEYS */;
+INSERT INTO `holidays` VALUES (1,'2020-03-10','Holi','Regional Holiday'),(2,'2020-04-01','Bank Holiday','Not A Public Holiday'),(3,'2020-04-02','Ram Navami','Regional Holiday'),(4,'2020-04-06','Mahavir Jayanti','Regional Holiday'),(5,'2020-04-10','Good Friday','Regional Holiday'),(6,'2020-05-07','Buddha Purnima','Regional Holiday'),(7,'2020-05-25','Id-ul-Fitr','Regional Holiday'),(8,'2020-08-01','Id-Uz-Zuha','Regional Holiday'),(9,'2020-08-12','Janmashtami','Regional Holiday'),(10,'2020-08-15','Independence Day','Public Holiday'),(11,'2020-08-30','Ashura','Regional Holiday'),(12,'2020-10-02','Mahatma Gandhi Birthday','Public Holiday'),(13,'2020-10-25','Dussehra','Regional Holiday'),(14,'2020-10-30','Maulud Nabi','Regional Holiday'),(15,'2020-10-31','Maharishi Valmiki Birthday','Regional Holiday'),(16,'2020-11-14','Diwali','Regional Holiday'),(17,'2020-11-30','Guru Nanak\'s Birthday','Regional Holiday'),(18,'2020-12-25','Christmas Day','Regional Holiday');
+/*!40000 ALTER TABLE `holidays` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `section_s10`
 --
 
@@ -161,118 +187,6 @@ LOCK TABLES `section_s10_attendance` WRITE;
 /*!40000 ALTER TABLE `section_s10_attendance` DISABLE KEYS */;
 INSERT INTO `section_s10_attendance` VALUES (1,'DS','Both','2020-02-18',3,'1','P','A','A','P','A','A','A','A','A','A','P','A','A','A','A','A','A','A','A','A','A','P','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A','P','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A'),(2,'DS LAB','A','2020-02-20',5,'1','A','P','A','A','A','A','P','A','A','A','A','A','A','A','A','P','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(3,'DS LAB','B','2020-02-20',7,'1',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'P','A','A','A','A','A','A','A','A','A','A','A','A','P','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A'),(5,'DS','Both','2020-02-20',3,'1','P','P','A','A','A','A','A','A','A','A','A','A','A','A','A','A','P','P','P','A','A','A','A','A','A','A','P','P','A','A','A','A','A','A','A','A','A','A','A','P','A','A','A','A','A','A','A','A','A','A','A','A','A','P','A','A','A','A','A','A','A','A','A','A','A','A','A','P','A','A','A');
 /*!40000 ALTER TABLE `section_s10_attendance` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `section_t9`
---
-
-DROP TABLE IF EXISTS `section_t9`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `section_t9` (
-  `studentRollNo` varchar(12) NOT NULL,
-  `studentName` varchar(40) DEFAULT NULL,
-  PRIMARY KEY (`studentRollNo`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `section_t9`
---
-
-LOCK TABLES `section_t9` WRITE;
-/*!40000 ALTER TABLE `section_t9` DISABLE KEYS */;
-INSERT INTO `section_t9` VALUES ('a00115603117','AARUSHI ATREY'),('a00215603117','ADARSH LUNTHI'),('a00315603117','AMAN MALHOTRA'),('a00415603117','AMAN SHARMA'),('a00515603117','AMIT KUMAR'),('a00715603117','ANKIT GARG'),('a00815603117','ANSH AGGARWAL'),('a01015603117','AYAAN KAMAAL RIZVI'),('a01115603117','CHAITANYA SAGAR'),('a01215603117','GAURAV KUMAR'),('a01315603117','HIMANSHU BHARDWAJ'),('a01415603117','HIMANSHU PANDEY'),('a01515603117','HITESH BHAT'),('a01615603117','ISHANI BHATIA'),('a01715603117','KARAN SINGH RAWAT'),('a01815603117','LAKSHYA RAWAT'),('a01915603117','LOKESH KUMAR'),('a02015603117','MAHIMA VERMA'),('a02115603117','MAYANK UPADHYAY'),('a02215603117','PRAKASH CHANDRA CHOUDHARY'),('a02315603117','RACHIT JAIN'),('a02515603117','RUSHALI KHANNA'),('a02615603117','SAKSHI BISHT'),('a02715603117','SARVESH GAKHAR'),('a02815603117','SAURABH PACHERWAL'),('a02915603117','SHAHRUKH HUSSAIN'),('a03015603117','SHRADHA'),('a03115603117','SHUBHAM KUMAR SINGH'),('a03315603117','SMRITI SINGH'),('a03415603117','SOUMYA CHOUDHARY'),('a03515603117','SUSHANT KUMAR'),('b03615603117','SWATI'),('b03715603117','TRISHITA PINGOLIA'),('b03815603117','UMANG SHARMA'),('b03915603117','VAIBHAV SHUKLA'),('b04015603117','VISHAL RAI'),('b20115603117','IBADULLA'),('b20215603117','ISHAN JUNEJA'),('b20315603117','NITESH CHAUDHARY'),('b20415603117','RISHABH JAIN'),('b20515603117','PURNIMA GUPTA'),('b20615603117','HARSH TYAGI'),('b35115603117','AAYUSH AGARWAL'),('b35215603117','AKASH GARG'),('b35315603117','ARPIT GUPTA'),('b35415603117','HARSHAL GOYAL'),('b35515603117','PRIYANKA GARG'),('b35615603117','ROHAN UPPAL'),('b35715603117','SAURABH MEHANTI'),('b35815603117','SHUBHAM'),('b35915603117','SIDHARTH DHAMIJA'),('b36015603117','SRESHTH KHANDELWAL'),('b36115603117','VATSAL KHANDELWAL'),('b36215603117','YATHARTH KHOSLA'),('b40115603117','LOVLESH BHATT'),('b40215603117','RIYA'),('b40315603117','NAMAN JINDAL'),('b40415603117','ASHISH SATTI'),('b40515603117','S ABHINAV ANAND'),('b40715603117','DURGA PURI'),('b40815603117','YOUGAL JOSHI'),('b40915603117','RAJAT GUPTA');
-/*!40000 ALTER TABLE `section_t9` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `section_t9_attendance`
---
-
-DROP TABLE IF EXISTS `section_t9_attendance`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `section_t9_attendance` (
-  `Sno` int(11) NOT NULL AUTO_INCREMENT,
-  `lecture` varchar(40) NOT NULL,
-  `lecture_date` date NOT NULL,
-  `lecture_no` int(11) NOT NULL,
-  `userId` varchar(20) NOT NULL,
-  `a00115603117` varchar(10) DEFAULT NULL,
-  `a00215603117` varchar(10) DEFAULT NULL,
-  `a00315603117` varchar(10) DEFAULT NULL,
-  `a00415603117` varchar(10) DEFAULT NULL,
-  `a00515603117` varchar(10) DEFAULT NULL,
-  `a00715603117` varchar(10) DEFAULT NULL,
-  `a00815603117` varchar(10) DEFAULT NULL,
-  `a01015603117` varchar(10) DEFAULT NULL,
-  `a01115603117` varchar(10) DEFAULT NULL,
-  `a01215603117` varchar(10) DEFAULT NULL,
-  `a01315603117` varchar(10) DEFAULT NULL,
-  `a01415603117` varchar(10) DEFAULT NULL,
-  `a01515603117` varchar(10) DEFAULT NULL,
-  `a01615603117` varchar(10) DEFAULT NULL,
-  `a01715603117` varchar(10) DEFAULT NULL,
-  `a01815603117` varchar(10) DEFAULT NULL,
-  `a01915603117` varchar(10) DEFAULT NULL,
-  `a02015603117` varchar(10) DEFAULT NULL,
-  `a02115603117` varchar(10) DEFAULT NULL,
-  `a02215603117` varchar(10) DEFAULT NULL,
-  `a02315603117` varchar(10) DEFAULT NULL,
-  `a02515603117` varchar(10) DEFAULT NULL,
-  `a02615603117` varchar(10) DEFAULT NULL,
-  `a02715603117` varchar(10) DEFAULT NULL,
-  `a02815603117` varchar(10) DEFAULT NULL,
-  `a02915603117` varchar(10) DEFAULT NULL,
-  `a03015603117` varchar(10) DEFAULT NULL,
-  `a03115603117` varchar(10) DEFAULT NULL,
-  `a03315603117` varchar(10) DEFAULT NULL,
-  `a03415603117` varchar(10) DEFAULT NULL,
-  `a03515603117` varchar(10) DEFAULT NULL,
-  `b03615603117` varchar(10) DEFAULT NULL,
-  `b03715603117` varchar(10) DEFAULT NULL,
-  `b03815603117` varchar(10) DEFAULT NULL,
-  `b03915603117` varchar(10) DEFAULT NULL,
-  `b04015603117` varchar(10) DEFAULT NULL,
-  `b20115603117` varchar(10) DEFAULT NULL,
-  `b20215603117` varchar(10) DEFAULT NULL,
-  `b20315603117` varchar(10) DEFAULT NULL,
-  `b20415603117` varchar(10) DEFAULT NULL,
-  `b20515603117` varchar(10) DEFAULT NULL,
-  `b20615603117` varchar(10) DEFAULT NULL,
-  `b35115603117` varchar(10) DEFAULT NULL,
-  `b35215603117` varchar(10) DEFAULT NULL,
-  `b35315603117` varchar(10) DEFAULT NULL,
-  `b35415603117` varchar(10) DEFAULT NULL,
-  `b35515603117` varchar(10) DEFAULT NULL,
-  `b35615603117` varchar(10) DEFAULT NULL,
-  `b35715603117` varchar(10) DEFAULT NULL,
-  `b35815603117` varchar(10) DEFAULT NULL,
-  `b35915603117` varchar(10) DEFAULT NULL,
-  `b36015603117` varchar(10) DEFAULT NULL,
-  `b36115603117` varchar(10) DEFAULT NULL,
-  `b36215603117` varchar(10) DEFAULT NULL,
-  `b40115603117` varchar(10) DEFAULT NULL,
-  `b40215603117` varchar(10) DEFAULT NULL,
-  `b40315603117` varchar(10) DEFAULT NULL,
-  `b40415603117` varchar(10) DEFAULT NULL,
-  `b40515603117` varchar(10) DEFAULT NULL,
-  `b40715603117` varchar(10) DEFAULT NULL,
-  `b40815603117` varchar(10) DEFAULT NULL,
-  `b40915603117` varchar(10) DEFAULT NULL,
-  PRIMARY KEY (`Sno`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `section_t9_attendance`
---
-
-LOCK TABLES `section_t9_attendance` WRITE;
-/*!40000 ALTER TABLE `section_t9_attendance` DISABLE KEYS */;
-/*!40000 ALTER TABLE `section_t9_attendance` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -427,4 +341,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-03-17 12:58:57
+-- Dump completed on 2020-05-25 10:42:19

@@ -10,7 +10,7 @@
   "author": "Mohit Singh",
   "license": "ISC",
   "dependencies": {
-    "date-fns": "^2.4.1",
+    "date-fns": "^2.14.0",
     "dotenv": "^8.2.0",
     "ejs": "^2.7.4",
     "express": "^4.16.4",
