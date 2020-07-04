@@ -22,7 +22,7 @@ const redirectHome = (req, res, next) => {
     res.redirect('/teacher/timeTable')
 	}
 	else if(req.session.userType == "admin") {
-		res.redirect('/admin/teacher')
+		res.redirect('/admin')
 	}
   else {
     next()
@@ -51,7 +51,7 @@ router.post("/", redirectHome, (req, res) => {
 			req.session.userType = result[0].userType.toLowerCase();
 
 			if(req.session.userType == "admin") {
-				return res.redirect("/admin/teacher");
+				return res.redirect("/admin");
 			}
 
       var subjects = await db.getSubjects(req.session.department, req.session.userId)

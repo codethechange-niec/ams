@@ -5,6 +5,7 @@ function renderDepartments(response) {
 
 	let departmentDropdown = dropdownContainer.getElementsByClassName("dropdown-department")[0]
 
+	response.list.unshift(" ")
 	for(let department of response.list) {
 		departmentDropdown.insertAdjacentHTML("beforeend", `<option value="${department}">${department}</option>`)
 	}
@@ -21,6 +22,8 @@ function renderSections(res) {
 
 	let sections = res.list;
 	let sectionDropdown = dropdownContainer.getElementsByClassName("dropdown-section")[0]
+
+	sections.unshift(" ")
 
 	for(let section of sections) {
 		sectionDropdown.insertAdjacentHTML("beforeend", `<option value="${section}">${section}</option>`)
@@ -65,6 +68,8 @@ function renderStudents(res) {
 
 	let students = res.list;
 	let studentDropdown = dropdownContainer.getElementsByClassName("dropdown-student")[0]
+
+	students.unshift(" ");
 
 	for(let student of students) {
 		studentDropdown.insertAdjacentHTML("beforeend", `<option value="${student}">${student}</option>`)

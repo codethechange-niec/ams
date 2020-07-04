@@ -1,6 +1,8 @@
 
 const express = require("express")
 const bodyParser = require("body-parser")
+const dateFns = require("date-fns")
+const defaults = require("../functions").defaults;
 const util = require(__dirname + "/../functions.js")
 const db = require("../dbfunctions/admin")
 
@@ -21,6 +23,100 @@ const redirectLogin = function (req, res, next) {
 }
 
 router.use(redirectLogin);
+
+
+// Home
+router.get("/", (req, res) => {
+
+	console.log("Admin Home")
+	res.render("admin/home");
+
+})
+
+
+// Ajax routes
+
+// set arrangement
+router.post("/arrangement", async (req, res) => {
+
+	console.log(req.body)
+
+	let {department, faculty, date, lectureCell, substitute} = req.body;
+
+	let missingField = "";
+	if(!department) missingField = "department"
+	else if(!faculty) missingField = "faculty"
+	else if(!date) missingField = "date"
+	else if(!lectureCell) missingField = "lecture cell"
+	else if(!substitute) missingField = "substitute"
+
+	if(missingField) {
+		return res.status(406).json({
+			missing: {
+				name: missingField
+			}
+		})
+	}
+
+	lectureCell = lectureCell.split(" ");
+
+	// configuring for lab attendance
+	if(lectureCell.length >= 6) {
+		lectureCell[0] += " LAB";
+		lectureCell[1] += " " + lectureCell[2];
+		lectureCell[3] = lectureCell[6]
+	}
+
+	// creating proper js date object
+	date = date.split("-");
+	date = new Date(date[0], date[1]-1, date[2]);
+
+
+	// check if any arrangement already present
+	let present = await db.getArrangement({
+		date: dateFns.format(date, "yyyy-MM-dd"),
+		section: lectureCell[1],
+		lecture: lectureCell[3]
+	})
+
+	if(present.status == -1) {
+		return res.status(500).json({
+			err: "Internal Server Error"
+		})
+	}
+	else if(present.status == 1) {
+		return res.status(409).json({
+			error: "Already Present",
+			result: present.result[0]
+		})
+	}
+
+
+	let created = await db.createArrangement({
+		date: dateFns.format(date, "yyyy-MM-dd"),
+		department,
+		faculty,
+		substitute,
+		section: lectureCell[1],
+		subject: lectureCell[0],
+		lecture: lectureCell[3],
+		expires: dateFns.format(dateFns.addDays(date, defaults.ARRANGEMENT_EXPIRY), "yyyy-MM-dd")
+	})
+
+	if(created.status == 1) {
+		res.status(201).json({
+			msg: "Arrangement created id: " + created.result.insertId
+		})
+	}
+	else {
+		res.status(500).json({
+			err: "Internal server error"
+		})
+	}
+
+})
+
+
 
 //teacher base routes
 router.get("/teacher", async (req, res) => {

@@ -13,28 +13,36 @@
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 </head>
 <body>
-	<button type="button" hidden="true" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Open Modal</button>
-			<div id="myModal" class="modal fade" role="dialog">
-				<div class="modal-dialog">
+	<!-- <button type="button" hidden="true" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Open Modal</button> -->
 
-					<!-- Modal content-->
-					<div class="modal-content">
-						<div class="modal-header">
-							<button type="button" class="close" data-dismiss="modal">&times;</button>
-							<h4 class="modal-title"><%= msg.heading %></h4>
-						</div>
-						<div class="modal-body">
-							<p><%= msg.body %></p>
-						</div>
-						<div class="modal-footer">
-							<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-						</div>
-					</div>
 
-				</div>
-			</div>
-			<script>
-				document.getElementsByTagName("button")[0].click()
-			</script>
+
+	<!-- <script src="/js/AJAX.js"></script> -->
+	<script>
+
+		function load(method, url, responseCallback, callbackArgs={}) {
+			var xhttp = new XMLHttpRequest();
+			xhttp.onreadystatechange = function () {
+				if(this.readyState == 4) {
+					console.log("Response text:", this.responseText);
+					let res = JSON.parse(this.responseText);
+					if(res.err) {
+						console.log("Some error happens");
+					} else {
+						responseCallback(res, callbackArgs);
+					}
+				}
+			}
+			xhttp.open(method, url, true);
+			xhttp.send();
+		}
+
+
+		load("POST", "/practice", (res, args) => {
+			console.log("Practice response:", res);
+			document.write(res)
+		}, {})
+
+	</script>
 </body>
 </html>
