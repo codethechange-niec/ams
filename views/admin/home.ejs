@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Admin Home</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+	<!-- Font Awesome -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css">
+	<style type="text/css">
+		.form-container{
+			position: absolute;
+			top: 15vh;
+			background: #0AAFF1;
+			padding: 30px;
+			width: 100%;
+			border-radius: 10px;
+			box-shadow: 0px 0px 10px 0px #000;
+		}
+	</style>
+</head>
+<body>
+
+
+	<%- include("../partials/adminHeader.ejs") -%>
+
+
+
+	<div class="container-fluid bg">
+		<div class="row justify-content-center">
+			<div class="col-12 col-sm-6 col-md-3">
+				<fieldset class="form-container">
+				  <div class="form-group">
+				    <label for="department"><strong>Select Department</strong></label>
+				    <select class="form-control dropdown-department" id="department" name="department" onchange="getFaculty()">
+				      <!-- <option>1</option>
+				      <option>2</option>
+				      <option>3</option>
+				      <option>4</option>
+				      <option>5</option> -->
+				    </select>
+				  </div>
+				  <div class="form-group">
+				    <label for="faculty"><strong>Select Faculty</strong></label>
+				    <select class="form-control dropdown-faculty" id="faculty" name="faculty" onchange="getSecSubLec()">
+				      <!-- <option>1</option>
+				      <option>2</option>
+				      <option>3</option>
+				      <option>4</option>
+				      <option>5</option> -->
+				    </select>
+				  	<label for="date"><strong>Date</strong></label>
+				  	<input type="date" class="form-control" id="date" placeholder="Choose date" onchange="getSecSubLec()">
+				  </div>
+
+				  <div class="form-group">
+				    <label for="sec-sub-lec"><strong>Select Section and Lecture</strong></label>
+				    <select class="form-control" id="sec-sub-lec" name="secSubLec">
+				      <!-- <option>1</option>
+				      <option>2</option>
+				      <option>3</option>
+				      <option>4</option>
+				      <option>5</option> -->
+				    </select>
+				  </div>
+
+				  <div class="form-group">
+				    <label for="substitute"><strong>Select Substitute</strong></label>
+				    <select class="form-control" id="substitute" name="substitute">
+				      <!-- <option>1</option>
+				      <option>2</option>
+				      <option>3</option>
+				      <option>4</option>
+				      <option>5</option> -->
+				    </select>
+				  </div>
+				  <button type="button" class="btn btn-dark btn-block" onclick="submit()">Submit</button>
+				</fieldset>
+			</div>
+		</div>
+	</div>
+
+
+	<script src="/js/AJAX.js"></script>
+	<script src="/js/arrangements.js"></script>
+
+	<script>
+
+		function submit() {
+
+			var department = document.getElementById("department").value;
+			var faculty = document.getElementById("faculty").value;
+			var date = document.getElementById("date").value;
+			var lectureCell = document.getElementById("sec-sub-lec").value;
+			var substitute = document.getElementById("substitute").value
+
+			console.log(department || faculty || date || lectureCell || substitute || "All Missing")
+
+			loadWithParams("POST", "/admin/arrangement", {department, faculty, date, lectureCell, substitute}, (res) => {
+
+				if(res.httpStatus == 406) {
+					alert(`${res.missing.name} is missing`)
+				}
+				else if(res.httpStatus == 409) {
+					alert(`Arrangement already prensent with id: ${res.result.id}`)
+				}
+				else {
+					alert(`Arrangement successfully taken`)
+				}
+
+			})
+
+		}
+
+		</script>
+
+
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+</body>
+</html>

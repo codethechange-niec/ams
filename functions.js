@@ -96,5 +96,6 @@ exports.defaults = {
 	DATABASE: process.env.DATABASE,
 	DB_HOST: process.env.DB_HOST,
 	DB_USER: process.env.DB_USER,
-	DB_PASSWORD: process.env.DB_PASSWORD
+	DB_PASSWORD: process.env.DB_PASSWORD,
+	ARRANGEMENT_EXPIRY: 3  								//duration of days for an arrangement
 }

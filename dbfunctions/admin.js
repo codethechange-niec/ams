@@ -153,3 +153,19 @@ module.exports.createSectionAttendanceTable = async (details) => {
     ${query.substr(0, query.length-1)}
   )`)
 }
+
+
+// get arrangement
+module.exports.getArrangement = async (details) => {
+
+	return await util.queryProcessSchemaGet(`select id from arrangements where date='${details.date}' and section='${details.section}' and lecture='${details.lecture}'`)
+
+}
+
+
+// create arrangement
+module.exports.createArrangement = async (details) => {
+
+	return await util.queryProcessSchemaPut(`insert into arrangements (date, department, section, subject, lecture, faculty, substitute, expires) values('${details.date}', '${details.department}', '${details.section}', '${details.subject}', ${details.lecture}, '${details.faculty}', '${details.substitute}', '${details.expires}')`);
+
+}

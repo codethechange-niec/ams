@@ -1,13 +1,14 @@
-function load(method, url, responseCallback) {
+function load(method, url, responseCallback, callbackArgs={}) {
 	var xhttp = new XMLHttpRequest();
 	xhttp.onreadystatechange = function () {
-		if(this.readyState == 4 && this.status == 200) {
+		if(this.readyState == 4) {
 			// console.log("Response text:", this.responseText);
 			let res = JSON.parse(this.responseText);
+			res.httpStatus = this.status;
 			if(res.err) {
 				console.log("Some error happens");
 			} else {
-				responseCallback(res);
+				responseCallback(res, callbackArgs);
 			}
 		}
 	}
@@ -15,16 +16,17 @@ function load(method, url, responseCallback) {
 	xhttp.send();
 }
 
-function loadWithParams(method, url, params, responseCallback) {
+function loadWithParams(method, url, params, responseCallback, callbackArgs={}) {
 	var xhttp = new XMLHttpRequest();
 	xhttp.onreadystatechange = function () {
-		if(this.readyState == 4 && this.status == 200) {
+		if(this.readyState == 4) {
 			// console.log("Response text:", this.responseText);
 			let res = JSON.parse(this.responseText)
+			res.httpStatus = this.status;
 			if(res.err) {
 				console.log("Some error happens");
 			} else {
-				responseCallback(res);
+				responseCallback(res, callbackArgs);
 			}
 		}
 	}
