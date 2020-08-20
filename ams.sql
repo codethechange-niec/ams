@@ -1,13 +1,13 @@
--- MySQL dump 10.13  Distrib 5.7.28, for Linux (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.21, for Linux (x86_64)
 --
 -- Host: localhost    Database: ams
 -- ------------------------------------------------------
--- Server version	5.7.28-0ubuntu0.18.04.4
+-- Server version	8.0.21-0ubuntu0.20.04.4
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
+/*!50503 SET NAMES utf8mb4 */;
 /*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
 /*!40103 SET TIME_ZONE='+00:00' */;
 /*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
@@ -16,17 +16,49 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Table structure for table `arrangements`
+--
+
+DROP TABLE IF EXISTS `arrangements`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `arrangements` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `date` date NOT NULL,
+  `department` varchar(10) NOT NULL,
+  `section` varchar(10) NOT NULL,
+  `subject` varchar(10) NOT NULL,
+  `lecture` int NOT NULL,
+  `faculty` varchar(20) NOT NULL,
+  `substitute` varchar(20) NOT NULL,
+  `expires` date DEFAULT NULL,
+  `completed` tinyint(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `arrangements`
+--
+
+LOCK TABLES `arrangements` WRITE;
+/*!40000 ALTER TABLE `arrangements` DISABLE KEYS */;
+INSERT INTO `arrangements` VALUES (4,'2020-06-03','IT','S10 B','DS LAB',6,'1','5','2020-06-06',0),(7,'2020-05-29','IT','S10','DS',5,'1','5','2020-06-01',1),(8,'2020-07-03','IT','S9 B','DS LAB',4,'5','1','2020-07-06',0);
+/*!40000 ALTER TABLE `arrangements` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `department_it`
 --
 
 DROP TABLE IF EXISTS `department_it`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `department_it` (
   `Teacher_ID` varchar(20) DEFAULT NULL,
   `Section` varchar(10) DEFAULT NULL,
   `Subject` varchar(40) DEFAULT NULL,
-  `total_lectures` int(11) DEFAULT '0'
+  `total_lectures` int DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -36,7 +68,7 @@ CREATE TABLE `department_it` (
 
 LOCK TABLES `department_it` WRITE;
 /*!40000 ALTER TABLE `department_it` DISABLE KEYS */;
-INSERT INTO `department_it` VALUES ('1','S10','DS',2),('1','F10','WC',0),('1','S10 B','DS LAB',1),('1','S10 A','DS LAB',1),('3','T9','JAVA',0),('3','T9 A','JAVA LAB',0),('3','T10','JAVA',0),('3','T9 B','JAVA LAB',0),('3','T10 A','JAVA LAB',0),('3','T10 B','JAVA LAB',0),('5','S9','DS',0),('5','S10','DS',0),('5','S9 A','DS LAB',0),('5','S9 B','DS LAB',0),('6','S10','FOCS',0),('7','S10','CGM',0),('7','S9','CGM',0),('7','S10 A','CGM LAB',0),('7','S9 A','CGM LAB',0),('7','S9 B','CGM LAB',0),('7','S10 S9','CGM B',0),('7','S10 B','CGM LAB',0),('8','S9','FOCS',0),('9','S19','DS',0),('9','S19 B','DS LAB',0),('9','S19 A','DS LAB',0),('10','S19','CGM',0),('10','S19 B','CGM LAB',0),('10','S19 A','CGM LAB',0);
+INSERT INTO `department_it` VALUES ('1','S10','DS',3),('1','F10','WC',0),('1','S10 B','DS LAB',1),('1','S10 A','DS LAB',1),('3','T9','JAVA',0),('3','T9 A','JAVA LAB',0),('3','T10','JAVA',0),('3','T9 B','JAVA LAB',0),('3','T10 A','JAVA LAB',0),('3','T10 B','JAVA LAB',0),('5','S9','DS',0),('5','S10','DS',0),('5','S9 A','DS LAB',0),('5','S9 B','DS LAB',0),('6','S10','FOCS',0),('7','S10','CGM',0),('7','S9','CGM',0),('7','S10 A','CGM LAB',0),('7','S9 A','CGM LAB',0),('7','S9 B','CGM LAB',0),('7','S10 S9','CGM B',0),('7','S10 B','CGM LAB',0),('8','S9','FOCS',0),('9','S19','DS',0),('9','S19 B','DS LAB',0),('9','S19 A','DS LAB',0),('10','S19','CGM',0),('10','S19 B','CGM LAB',0),('10','S19 A','CGM LAB',0);
 /*!40000 ALTER TABLE `department_it` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -46,9 +78,9 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `holidays`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `holidays` (
-  `sno` int(11) NOT NULL AUTO_INCREMENT,
+  `sno` int NOT NULL AUTO_INCREMENT,
   `date` date DEFAULT NULL,
   `name` varchar(40) DEFAULT NULL,
   `type` varchar(20) DEFAULT NULL,
@@ -72,7 +104,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `section_s10`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `section_s10` (
   `studentRollNo` varchar(12) NOT NULL,
   `studentName` varchar(40) DEFAULT NULL,
@@ -96,13 +128,13 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `section_s10_attendance`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `section_s10_attendance` (
-  `Sno` int(11) NOT NULL AUTO_INCREMENT,
+  `Sno` int NOT NULL AUTO_INCREMENT,
   `lecture` varchar(40) NOT NULL,
   `grp` enum('A','B','Both') NOT NULL,
   `lecture_date` date NOT NULL,
-  `lecture_no` int(11) NOT NULL,
+  `lecture_no` int NOT NULL,
   `userId` varchar(20) NOT NULL,
   `a41015603117` varchar(10) DEFAULT NULL,
   `a41215603117` varchar(10) DEFAULT NULL,
@@ -176,7 +208,7 @@ CREATE TABLE `section_s10_attendance` (
   `b75115603117` varchar(10) DEFAULT NULL,
   `b90115603118` varchar(10) DEFAULT NULL,
   PRIMARY KEY (`Sno`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -185,7 +217,7 @@ CREATE TABLE `section_s10_attendance` (
 
 LOCK TABLES `section_s10_attendance` WRITE;
 /*!40000 ALTER TABLE `section_s10_attendance` DISABLE KEYS */;
-INSERT INTO `section_s10_attendance` VALUES (1,'DS','Both','2020-02-18',3,'1','P','A','A','P','A','A','A','A','A','A','P','A','A','A','A','A','A','A','A','A','A','P','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A','P','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A'),(2,'DS LAB','A','2020-02-20',5,'1','A','P','A','A','A','A','P','A','A','A','A','A','A','A','A','P','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(3,'DS LAB','B','2020-02-20',7,'1',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'P','A','A','A','A','A','A','A','A','A','A','A','A','P','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A'),(5,'DS','Both','2020-02-20',3,'1','P','P','A','A','A','A','A','A','A','A','A','A','A','A','A','A','P','P','P','A','A','A','A','A','A','A','P','P','A','A','A','A','A','A','A','A','A','A','A','P','A','A','A','A','A','A','A','A','A','A','A','A','A','P','A','A','A','A','A','A','A','A','A','A','A','A','A','P','A','A','A');
+INSERT INTO `section_s10_attendance` VALUES (1,'DS','Both','2020-02-18',3,'1','P','A','A','P','A','A','A','A','A','A','P','A','A','A','A','A','A','A','A','A','A','P','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A','P','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A'),(2,'DS LAB','A','2020-02-20',5,'1','A','P','A','A','A','A','P','A','A','A','A','A','A','A','A','P','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(3,'DS LAB','B','2020-02-20',7,'1',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'P','A','A','A','A','A','A','A','A','A','A','A','A','P','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A'),(5,'DS','Both','2020-02-20',3,'1','P','P','A','A','A','A','A','A','A','A','A','A','A','A','A','A','P','P','P','A','A','A','A','A','A','A','P','P','A','A','A','A','A','A','A','A','A','A','A','P','A','A','A','A','A','A','A','A','A','A','A','A','A','P','A','A','A','A','A','A','A','A','A','A','A','A','A','P','A','A','A'),(7,'DS','Both','2020-05-29',5,'5','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A','P','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A','P','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A','P','A','A','A');
 /*!40000 ALTER TABLE `section_s10_attendance` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -195,7 +227,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `section_s19`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `section_s19` (
   `studentRollNo` varchar(12) NOT NULL,
   `studentName` varchar(40) NOT NULL,
@@ -219,12 +251,12 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `section_s19_attendance`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `section_s19_attendance` (
-  `Sno` int(11) NOT NULL AUTO_INCREMENT,
+  `Sno` int NOT NULL AUTO_INCREMENT,
   `lecture` varchar(40) NOT NULL,
   `lecture_date` date NOT NULL,
-  `lecture_no` int(11) NOT NULL,
+  `lecture_no` int NOT NULL,
   `userId` varchar(20) NOT NULL,
   `a00296203117` varchar(10) DEFAULT NULL,
   `a00396203117` varchar(10) DEFAULT NULL,
@@ -309,7 +341,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `section_s9`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `section_s9` (
   `studentRollNo` varchar(12) NOT NULL,
   `studentName` varchar(40) NOT NULL,
@@ -333,12 +365,12 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `section_s9_attendance`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `section_s9_attendance` (
-  `Sno` int(11) NOT NULL AUTO_INCREMENT,
+  `Sno` int NOT NULL AUTO_INCREMENT,
   `lecture` varchar(40) NOT NULL,
   `lecture_date` date NOT NULL,
-  `lecture_no` int(11) NOT NULL,
+  `lecture_no` int NOT NULL,
   `userId` varchar(20) NOT NULL,
   `a00115603117` varchar(10) DEFAULT NULL,
   `a00215603117` varchar(10) DEFAULT NULL,
@@ -421,7 +453,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `section_temp`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `section_temp` (
   `studentRollNo` varchar(12) DEFAULT NULL,
   `studentName` varchar(40) DEFAULT NULL
@@ -444,13 +476,13 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `section_temp_attendance`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `section_temp_attendance` (
-  `Sno` int(11) NOT NULL AUTO_INCREMENT,
+  `Sno` int NOT NULL AUTO_INCREMENT,
   `lecture` varchar(40) NOT NULL,
   `grp` enum('A','B','Both') DEFAULT NULL,
   `lecture_date` date NOT NULL,
-  `lecture_no` int(11) NOT NULL,
+  `lecture_no` int NOT NULL,
   `userId` varchar(20) NOT NULL,
   `a1` varchar(10) DEFAULT NULL,
   `a2` varchar(10) DEFAULT NULL,
@@ -476,10 +508,9 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `teacher_1`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `teacher_1` (
-  `day_no` int(11) NOT NULL AUTO_INCREMENT,
-  `day` varchar(10) NOT NULL,
+  `day_no` int NOT NULL AUTO_INCREMENT,
   `lec1` varchar(20) DEFAULT NULL,
   `lec2` varchar(20) DEFAULT NULL,
   `lec3` varchar(20) DEFAULT NULL,
@@ -497,7 +528,7 @@ CREATE TABLE `teacher_1` (
 
 LOCK TABLES `teacher_1` WRITE;
 /*!40000 ALTER TABLE `teacher_1` DISABLE KEYS */;
-INSERT INTO `teacher_1` VALUES (1,'Monday','-','-','DS S10','-','WC F10','-','-'),(2,'Tuesday','DS S10','-','-','-','WC F10','-','-'),(3,'Wednesday','-','-','-','-','-','DS S10 B LAB 1','DS S10 B LAB 1'),(4,'Thursday','-','DS S10','WC F10','DS S10 A LAB 1','DS S10 A LAB 1','-','-'),(5,'Friday','-','-','WC F10','-','DS S10','-','-');
+INSERT INTO `teacher_1` VALUES (1,'-','-','DS S10','-','WC F10','-','-'),(2,'DS S10','-','-','-','WC F10','-','-'),(3,'-','-','-','-','-','DS S10 B LAB 1','DS S10 B LAB 1'),(4,'-','DS S10','WC F10','DS S10 A LAB 1','DS S10 A LAB 1','-','-'),(5,'-','-','WC F10','-','DS S10','-','-');
 /*!40000 ALTER TABLE `teacher_1` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -507,9 +538,9 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `teacher_10`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `teacher_10` (
-  `day_no` int(11) NOT NULL AUTO_INCREMENT,
+  `day_no` int NOT NULL AUTO_INCREMENT,
   `lec1` varchar(20) DEFAULT NULL,
   `lec2` varchar(20) DEFAULT NULL,
   `lec3` varchar(20) DEFAULT NULL,
@@ -537,9 +568,9 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `teacher_3`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `teacher_3` (
-  `day_no` int(11) NOT NULL AUTO_INCREMENT,
+  `day_no` int NOT NULL AUTO_INCREMENT,
   `lec1` varchar(20) DEFAULT NULL,
   `lec2` varchar(20) DEFAULT NULL,
   `lec3` varchar(20) DEFAULT NULL,
@@ -567,9 +598,9 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `teacher_5`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `teacher_5` (
-  `day_no` int(11) NOT NULL AUTO_INCREMENT,
+  `day_no` int NOT NULL AUTO_INCREMENT,
   `lec1` varchar(20) DEFAULT NULL,
   `lec2` varchar(20) DEFAULT NULL,
   `lec3` varchar(20) DEFAULT NULL,
@@ -597,9 +628,9 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `teacher_6`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `teacher_6` (
-  `day_no` int(11) NOT NULL AUTO_INCREMENT,
+  `day_no` int NOT NULL AUTO_INCREMENT,
   `lec1` varchar(20) DEFAULT NULL,
   `lec2` varchar(20) DEFAULT NULL,
   `lec3` varchar(20) DEFAULT NULL,
@@ -627,9 +658,9 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `teacher_7`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `teacher_7` (
-  `day_no` int(11) NOT NULL AUTO_INCREMENT,
+  `day_no` int NOT NULL AUTO_INCREMENT,
   `lec1` varchar(20) DEFAULT NULL,
   `lec2` varchar(20) DEFAULT NULL,
   `lec3` varchar(20) DEFAULT NULL,
@@ -657,9 +688,9 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `teacher_8`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `teacher_8` (
-  `day_no` int(11) NOT NULL AUTO_INCREMENT,
+  `day_no` int NOT NULL AUTO_INCREMENT,
   `lec1` varchar(20) DEFAULT NULL,
   `lec2` varchar(20) DEFAULT NULL,
   `lec3` varchar(20) DEFAULT NULL,
@@ -687,9 +718,9 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `teacher_9`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `teacher_9` (
-  `day_no` int(11) NOT NULL AUTO_INCREMENT,
+  `day_no` int NOT NULL AUTO_INCREMENT,
   `lec1` varchar(20) DEFAULT NULL,
   `lec2` varchar(20) DEFAULT NULL,
   `lec3` varchar(20) DEFAULT NULL,
@@ -717,7 +748,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `users`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `users` (
   `userID` varchar(20) NOT NULL,
   `Name` varchar(30) NOT NULL,
@@ -734,7 +765,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES ('0','ADMIN','admin@123','admin','it'),('1','Dr. Prashant','123','Teacher','it'),('10','Mr. Gaurav Sharma','GAURAV','teacher','IT'),('2','DBMS mam','456','Teacher','it'),('3','Mrs Gunjan','xyz','teacher','IT'),('5','Mr Ankit Aggarwal','ankit','teacher','IT'),('6','Ms. Aashita','aashita','teacher','IT'),('7','Mr. Amit Pandey','amit','teacher','IT'),('8','Ms Monica','MONICA','teacher','IT'),('9','Mr Bijender Tyagi','bijender','teacher','IT');
+INSERT INTO `users` VALUES ('0','ADMIN','admin@123','admin','IT'),('1','Dr. Prashant','123','teacher','IT'),('10','Mr. Gaurav Sharma','GAURAV','teacher','IT'),('3','Mrs Gunjan','xyz','teacher','IT'),('5','Mr Ankit Aggarwal','ankit','teacher','IT'),('6','Ms. Aashita','aashita','teacher','IT'),('7','Mr. Amit Pandey','amit','teacher','IT'),('8','Ms Monica','MONICA','teacher','IT'),('9','Mr Bijender Tyagi','bijender','teacher','IT');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -747,4 +778,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-05-28 11:01:37
+-- Dump completed on 2020-08-20 20:14:46
