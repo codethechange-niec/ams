@@ -67,7 +67,7 @@ const checkValidDay = (req, res, next) => {
 		return res.redirect("/teacher/timeTable")
 	}
 
-	res.locals.attendanceDate = date;
+	res.locals.attendanceDate = dateFns.format(date, "EEEE, dd MMM");
 	req.session.attendanceDate = date;
 
 	// console.log(dateFns.format(date, "yyyy-MM-dd"))
@@ -346,7 +346,7 @@ router.get("/arrangement/:id/:day", checkValidDay, async (req, res) => {
       console.log("NO students");
       res.send("No students available");
     }
-    req.session.Students = result;
+		req.session.Students = result;
     res.render("attendance", {Students: req.session.Students});
 
     console.log(req.session.userId);
